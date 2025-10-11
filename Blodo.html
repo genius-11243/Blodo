@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLODO - Arsany Mina Fawzy</title>
-     <link rel="manifest" href="manifest.json">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
@@ -25,12 +24,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        /* Shift the entire body when the sidebar is open */
-        body.sidebar-open {
-            transform: translateX(var(--sidebar-width));
+            /* Removed body.sidebar-open CSS */
         }
 
         header {
@@ -767,13 +761,22 @@
     </main>
 
     <script>
-        let user = null;
+        // Load data from Local Storage on startup
+        let user = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let userPassword = localStorage.getItem('userPassword') || "password123";
         let donationData = {};
         const pageHistory = [];
         let feedbackTimer = null;
-        let allDonations = [];
-        let allRequests = [];
-        let userPassword = "password123";
+        let allDonations = JSON.parse(localStorage.getItem('allDonations')) || [];
+        let allRequests = JSON.parse(localStorage.getItem('allRequests')) || [];
+
+        // Function to save all persistent data to Local Storage
+        function saveData() {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('userPassword', userPassword);
+            localStorage.setItem('allDonations', JSON.stringify(allDonations));
+            localStorage.setItem('allRequests', JSON.stringify(allRequests));
+        }
 
         // Helper function to show a temporary message
         function showMessage(elementId, message) {
@@ -813,14 +816,14 @@
             }
         }
 
-        // Toggles the sidebar open and closed
+        // Toggles the sidebar open and closed (No body shift)
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
-            document.body.classList.toggle('sidebar-open');
+            // document.body.classList.toggle('sidebar-open'); // Removed this line to fix the white space issue
         }
 
-        // Simulates the login process
+        // Handles the persistent login process
         function login(event) {
             event.preventDefault();
             const loginBtn = document.getElementById('login-btn');
@@ -841,14 +844,22 @@
                 return;
             }
 
+            // Since we only check the password for the simplest persistent login:
             setTimeout(() => {
-                user = { name: "Test User", email: email };
+                // If a user is stored, load it, otherwise set up a new session object
+                const storedUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (storedUser) {
+                    user = storedUser;
+                } else {
+                    user = { name: "Test User", email: email };
+                    saveData(); // Save temporary user for persistence
+                }
                 startSession();
                 loginBtn.innerHTML = 'Login';
             }, 1000);
         }
 
-        // Simulates the sign-up process
+        // Handles the persistent sign-up process
         function signUp(event) {
             event.preventDefault();
             const signupBtn = document.getElementById('signup-btn');
@@ -867,6 +878,7 @@
             setTimeout(() => {
                 user = { name: name, email: email };
                 userPassword = password;
+                saveData(); // Save new user and password to local storage
                 startSession();
                 signupBtn.innerHTML = 'Sign Up';
             }, 1000);
@@ -878,14 +890,18 @@
                 document.getElementById('welcomeName').textContent = user.name;
                 document.getElementById('accountName').textContent = user.name;
                 document.getElementById('accountEmail').textContent = user.email;
-                document.getElementById('logout-sidebar-link').style.display = 'block';
-                document.getElementById('donate-sidebar-link').style.display = 'block';
-                document.getElementById('request-sidebar-link').style.display = 'block';
-                document.getElementById('reports-sidebar-link').style.display = 'block';
-                document.getElementById('account-sidebar-link').style.display = 'block';
-                document.getElementById('change-password-sidebar-link').style.display = 'block';
+
+                // Show logged-in sidebar links using 'flex' for correct display
+                document.getElementById('logout-sidebar-link').style.display = 'flex';
+                document.getElementById('donate-sidebar-link').style.display = 'flex';
+                document.getElementById('request-sidebar-link').style.display = 'flex';
+                document.getElementById('reports-sidebar-link').style.display = 'flex';
+                document.getElementById('account-sidebar-link').style.display = 'flex';
+                document.getElementById('change-password-sidebar-link').style.display = 'flex';
+
                 showSection('welcome-page');
             } else {
+                // Hide logged-in sidebar links
                 document.getElementById('logout-sidebar-link').style.display = 'none';
                 document.getElementById('donate-sidebar-link').style.display = 'none';
                 document.getElementById('request-sidebar-link').style.display = 'none';
@@ -980,16 +996,11 @@
             document.getElementById('reviewSickness').textContent = donationData.sickness;
             showSection('review-page');
         }
-// PWA Service Worker Registration
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('serviceworker.js')
-                .then(reg => console.log('Service Worker registered: ', reg))
-                .catch(err => console.log('Service Worker registration failed: ', err));
-        });
-    }
+
+        // Confirms donation and saves to Local Storage
         function confirmDonation() {
             allDonations.push(donationData);
+            localStorage.setItem('allDonations', JSON.stringify(allDonations));
             showSection('thank-you-page');
         }
         
@@ -1003,6 +1014,7 @@
             }
         }
 
+        // Submits request and saves to Local Storage
         function submitRequest() {
             const bloodType = document.getElementById('requestBloodType').value;
             const city = document.getElementById('requestCity').value;
@@ -1037,6 +1049,7 @@
             };
             
             allRequests.push(requestData);
+            localStorage.setItem('allRequests', JSON.stringify(allRequests));
             showSection('request-thank-you-page');
         }
         
@@ -1155,10 +1168,13 @@
             return csv;
         }
         
+        // Clears all data from the app and Local Storage
         function resetData() {
             if (confirm("Are you sure you want to clear all data? This action cannot be undone.")) {
                 allDonations = [];
                 allRequests = [];
+                localStorage.removeItem('allDonations');
+                localStorage.removeItem('allRequests');
                 renderDonationsTable();
                 renderRequestsTable();
                 alert("All data has been cleared.");
@@ -1191,6 +1207,7 @@
             }
         }
 
+        // Updates the persistent password
         function changePassword(event) {
             event.preventDefault();
             const currentPassword = document.getElementById('currentPassword').value;
@@ -1208,14 +1225,16 @@
             }
 
             userPassword = newPassword;
+            localStorage.setItem('userPassword', userPassword); // Save new password
             showMessage('password-feedback', "Password changed successfully!");
         }
 
+        // Clears the user session from memory and Local Storage
         function logout() {
             user = null;
+            localStorage.removeItem('currentUser'); // Remove session from storage
             alert("You have been logged out.");
             startSession();
-            showSection('main-page');
         }
 
         // Event listeners for "Other" input animation
@@ -1256,8 +1275,8 @@
                 });
             }
 
-            // Start on the main page
-            showSection('main-page', false);
+            // Start the session based on whether a user is loaded from local storage
+            startSession();
         });
     </script>
 </body>
