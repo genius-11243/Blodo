@@ -267,6 +267,44 @@
         tbody tr:hover {
             background-color: #e9ecef;
         }
+        
+        /* Awards & Badges Page Styles */
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .badge-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ddd;
+            transition: transform 0.3s;
+        }
+        
+        .badge-card.unlocked {
+            border-color: gold;
+            background: linear-gradient(145deg, #fffbe0, #fff);
+        }
+
+        .badge-icon {
+            font-size: 3rem;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+        
+        .badge-card.unlocked .badge-icon {
+            color: gold;
+        }
+        
+        .badge-name {
+            font-weight: 700;
+            color: #333;
+        }
 
 
         /* Animations */
@@ -425,6 +463,7 @@
             <li onclick="toggleSidebar(); startDonation()" id="donate-sidebar-link" style="display:none;"><i class="fas fa-hand-holding-heart"></i> Donate Blood</li>
             <li onclick="toggleSidebar(); startRequest()" id="request-sidebar-link" style="display:none;"><i class="fas fa-hand-holding-medical"></i> Request Blood</li>
             <li onclick="toggleSidebar(); showReportsPage()" id="reports-sidebar-link" style="display:none;"><i class="fas fa-chart-bar"></i> View Reports</li>
+            <li onclick="toggleSidebar(); showAwardsBadges()" id="awards-sidebar-link" style="display:none;"><i class="fas fa-trophy"></i> Awards & Badges</li>
             <li onclick="toggleSidebar(); showAccount()" id="account-sidebar-link" style="display:none;"><i class="fas fa-user-circle"></i> Account</li>
             <li onclick="toggleSidebar(); showChangePassword()" id="change-password-sidebar-link" style="display:none;"><i class="fas fa-key"></i> Change Password</li>
             <li onclick="toggleSidebar(); showReviewsHistoryPage()"><i class="fas fa-comments" id="reviews-history-sidebar-link"></i> View Reviews</li>
@@ -550,6 +589,16 @@
         </div>
     </main>
     
+    <main id="awards-badges-page">
+        <div class="container">
+            <h2>Your Donor Achievements</h2>
+            <p>Keep track of your life-saving milestones!</p>
+            <div id="awards-grid" class="awards-grid">
+                </div>
+            <button onclick="goBack()" style="width: 100%; margin-top: 2rem;">Go Back</button>
+        </div>
+    </main>
+
     <main id="review-form-page">
         <div class="container">
             <h2>Submit a Review</h2>
@@ -729,7 +778,22 @@
             </div>
         </div>
     </main>
-
+    
+    <main id="donation-warning-page">
+        <div class="container">
+            <div class="question-page">
+                <h2 style="color: #ffc107;">⚠️ Warning: Short Interval Donation</h2>
+                <p>According to standard guidelines, you should wait at least <strong>56 days</strong> between whole blood donations.</p>
+                <p>Your last recorded donation was on <strong id="lastDonationDateDisplay"></strong>, and the next recommended date is <strong id="nextRecommendedDateDisplay"></strong>.</p>
+                <p>The date you selected, <strong id="selectedDonationDateDisplay"></strong>, is less than 56 days after your last donation.</p>
+                <p><strong>Are you sure you want to proceed?</strong> Skipping this warning may make you ineligible at the donation center.</p>
+                <div class="dual-buttons">
+                    <button onclick="goBack()">Go Back & Change Date</button>
+                    <button onclick="skipWarning()" style="background-color: #ffc107; color: #333; box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);">Skip Warning & Proceed</button>
+                </div>
+            </div>
+        </div>
+    </main>
     <main id="sickness-page">
         <div class="container">
             <div class="question-page">
@@ -845,7 +909,19 @@
         let isLoggedIn = user !== null;
         let allReviews = JSON.parse(localStorage.getItem('allReviews')) || [];
         
-        // --- START: Massive Social Proof Injection (160 UNIQUE Reviews) ---
+        // --- Awards Data ---
+        const AWARDS = [
+            { id: 'first-timer', name: 'First Timer', description: 'Complete your first donation.', icon: 'fas fa-medal', requiredDonations: 1 },
+            { id: 'triple-donor', name: 'Triple Donor', description: 'Complete 3 donations.', icon: 'fas fa-star', requiredDonations: 3 },
+            { id: 'super-saver', name: 'Super Saver', description: 'Complete 5 donations.', icon: 'fas fa-trophy', requiredDonations: 5 },
+            { id: 'annual-champion', name: 'Annual Champion', description: 'Complete 6 donations in one year.', icon: 'fas fa-calendar-check', requiredDonations: 6, customCheck: (userDonations) => {
+                const oneYearAgo = new Date();
+                oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+                return userDonations.filter(d => new Date(d.date) >= oneYearAgo).length >= 6;
+            }}
+        ];
+        
+        // --- Massive Social Proof Injection (160 UNIQUE Reviews) ---
         const NUM_DUMMY_REVIEWS = 160;
         
         // Only inject if the reviews array is significantly small (or empty)
@@ -879,7 +955,7 @@
             
             const adjectives = ["incredibly easy", "surprisingly smooth", "remarkably fast", "totally reliable", "very user-friendly", "highly commendable", "extremely straightforward", "perfectly designed", "absolutely essential", "painless and quick", "a massive relief", "exceptionally well-done"];
             const subjects = ["the scheduling tool", "the hospital search", "the quick match function", "the clear guidance", "the overall process", "the immediate confirmation", "the simple interface", "the clear mission"];
-            const closings = [". Will definitely use again.", ". Keep up the great work!", ". Truly a lifesaver.", ". Highly recommended.", ". Fantastic service.", ". So happy I found this app.", ". A huge positive difference.", ". Made my donation anxiety disappear."];
+            const closings = [". Will definitely use again.", ". Keep up the great work!", ". Truly a lifesaver.", ". Highly recommended.", ". Fantastic service.", ". So happy I found this app.", ". A huge positive difference.", ". Great example of tech for good."];
 
             // Function to generate pseudo-random dates over the last year
             const generateDate = (index) => {
@@ -1061,7 +1137,7 @@
             const managedLinks = [
                 'logout-sidebar-link', 'donate-sidebar-link', 'request-sidebar-link', 
                 'reports-sidebar-link', 'account-sidebar-link', 'change-password-sidebar-link', 
-                'review-sidebar-link'
+                'review-sidebar-link', 'awards-sidebar-link'
             ];
 
             // Hide all managed links initially
@@ -1082,6 +1158,8 @@
                 document.getElementById('reports-sidebar-link').style.display = 'flex';
                 document.getElementById('account-sidebar-link').style.display = 'flex';
                 document.getElementById('change-password-sidebar-link').style.display = 'flex';
+                document.getElementById('awards-sidebar-link').style.display = 'flex'; // Show awards link
+
                 
                 // 'Submit Review' link logic
                 const hasReviewed = allReviews.some(r => r.email === user.email && !r.isDummy);
@@ -1155,13 +1233,65 @@
             showSection('date-page');
         }
         
+        // Helper to find the date of the last whole blood donation for the current user
+        function findLastDonationDate() {
+            if (!user) return null;
+            
+            // Filter donations by the current user's email
+            const userDonations = allDonations.filter(d => d.email === user.email);
+            
+            if (userDonations.length === 0) return null;
+            
+            // Sort by date descending and get the most recent one
+            userDonations.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Return the Date object of the most recent donation
+            return new Date(userDonations[0].date);
+        }
+
         function saveDate() {
-            const date = document.getElementById('donationDate').value;
+            const dateInput = document.getElementById('donationDate');
+            const date = dateInput.value;
+            
             if (!date) {
                 alert("Please select a donation date.");
                 return;
             }
+            
+            // 1. Store the selected date
             donationData.date = date;
+
+            // 2. Check for the 56-day restriction
+            const lastDonationDate = findLastDonationDate();
+            
+            if (lastDonationDate) {
+                const selectedDate = new Date(date);
+                const requiredWaitTime = 56 * 24 * 60 * 60 * 1000; // 56 days in milliseconds
+                const requiredNextDate = new Date(lastDonationDate.getTime() + requiredWaitTime);
+                
+                // Check if the selected date is LESS than 56 days after the last donation
+                if (selectedDate.getTime() < requiredNextDate.getTime()) {
+                    // Show Warning Page
+                    
+                    // Format dates for display
+                    const formatDate = (d) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    
+                    document.getElementById('lastDonationDateDisplay').textContent = formatDate(lastDonationDate);
+                    document.getElementById('selectedDonationDateDisplay').textContent = formatDate(selectedDate);
+                    document.getElementById('nextRecommendedDateDisplay').textContent = formatDate(requiredNextDate);
+
+                    showSection('donation-warning-page');
+                    return; // Stop the flow here, the user must decide on the warning page
+                }
+            }
+
+            // 3. If no last donation or check passes, proceed to next step
+            showSection('sickness-page');
+        }
+
+        // Function to skip the warning and continue the donation process
+        function skipWarning() {
+            // Proceed to the next step in the flow (sickness-page)
             showSection('sickness-page');
         }
 
@@ -1365,6 +1495,55 @@
             container.innerHTML = listHTML;
         }
 
+        // --- AWARDS & BADGES FUNCTIONS ---
+        function showAwardsBadges() {
+            if (!user) {
+                alert("Please log in to view your awards.");
+                showSection('login-form');
+                return;
+            }
+            showSection('awards-badges-page');
+            renderAwardsBadges();
+        }
+        
+        function renderAwardsBadges() {
+            const container = document.getElementById('awards-grid');
+            const userDonations = allDonations.filter(d => d.email === user.email);
+            
+            let badgesHTML = '';
+            
+            AWARDS.forEach(award => {
+                let unlocked = false;
+                
+                if (award.customCheck) {
+                    unlocked = award.customCheck(userDonations);
+                } else if (award.requiredDonations) {
+                    unlocked = userDonations.length >= award.requiredDonations;
+                }
+                
+                const cardClass = unlocked ? 'unlocked' : '';
+                const title = unlocked ? award.name : '???';
+                const description = unlocked ? award.description : 'Keep donating to unlock this award!';
+                const iconColor = unlocked ? 'gold' : '#ccc';
+
+                badgesHTML += `
+                    <div class="badge-card ${cardClass}" title="${description}">
+                        <i class="${award.icon} badge-icon"></i>
+                        <p class="badge-name">${title}</p>
+                        <small>${description}</small>
+                    </div>
+                `;
+            });
+            
+            if (userDonations.length === 0) {
+                badgesHTML = '<p style="grid-column: 1 / -1; color: #777;">No donations recorded yet. Complete your first donation to earn your "First Timer" badge!</p>' + badgesHTML;
+            }
+            
+            container.innerHTML = badgesHTML;
+        }
+        // --- END AWARDS & BADGES FUNCTIONS ---
+
+
         // View Reports Functionality
         function showReportsPage() {
             if (!user) {
@@ -1384,8 +1563,10 @@
                 return;
             }
             
-            let tableHTML = '<table><thead><tr><th>Name</th><th>Email</th><th>Age</th><th>Blood Type</th><th>City</th><th>Hospital</th><th>Date</th><th>Sicknesses</th></tr></thead><tbody>';
-            allDonations.forEach(donation => {
+            // Added 'Action' column
+            let tableHTML = '<table><thead><tr><th>Name</th><th>Email</th><th>Age</th><th>Blood Type</th><th>City</th><th>Hospital</th><th>Date</th><th>Sicknesses</th><th>Action</th></tr></thead><tbody>';
+            
+            allDonations.forEach((donation, index) => { // Added index for deletion
                 tableHTML += `<tr>
                     <td>${donation.name}</td>
                     <td>${donation.email}</td>
@@ -1395,12 +1576,29 @@
                     <td>${donation.hospital}</td>
                     <td>${donation.date}</td>
                     <td>${donation.sickness}</td>
+                    <td><button onclick="deleteDonation(${index})" style="padding: 5px 10px; background-color: #f44336; font-size: 0.8rem; border-radius: 5px; box-shadow: none;">Delete</button></td>
                 </tr>`;
             });
             tableHTML += '</tbody></table>';
             container.innerHTML = tableHTML;
         }
 
+        function deleteDonation(index) {
+            if (confirm("Are you sure you want to delete this donation record? This will also update your awards/badges.")) {
+                // Remove the item at the given index
+                allDonations.splice(index, 1);
+                
+                // Re-check awards/badges and update local storage
+                saveData();
+                
+                // Re-render the table to reflect the change
+                renderDonationsTable();
+                
+                // Update sidebar (in case donation count affected review status/awards)
+                startSession();
+            }
+        }
+        
         function renderRequestsTable() {
             const container = document.getElementById('requests-table-container');
             if (allRequests.length === 0) {
@@ -1488,20 +1686,21 @@
         // Clears all data from the app and Local Storage
         function resetData() {
             if (confirm("Are you sure you want to clear all data? This action cannot be undone.")) {
+                // Preserve only dummy reviews, clear all user-specific data
+                const dummyReviews = allReviews.filter(r => r.isDummy);
                 allDonations = [];
                 allRequests = [];
-                // Do NOT clear allReviews completely here, let the startup code re-inject the dummies
-                allReviews = allReviews.filter(r => r.isDummy);
+                allReviews = dummyReviews; // Keep the dummy reviews
                 hasDonatedOrRequested = false;
                 
-                // Clear all data, then re-save the dummy reviews
+                // Clear all data, then re-save the new initial state
                 localStorage.clear(); 
-                saveData(); // Save new initial state
+                saveData(); 
                 
                 logout(); // Reset user session
                 renderDonationsTable();
                 renderRequestsTable();
-                alert("All data has been cleared. Please log in again to continue.");
+                alert("All user-specific data has been cleared. Dummy reviews have been preserved. Please log in again to continue.");
             }
         }
 
