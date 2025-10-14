@@ -1097,12 +1097,7 @@
                 if (storedUser) {
                     user = storedUser;
                 } else {
-                    // FIX START: Instead of hardcoding "Test User", use the email prefix as a fallback name.
-                    const fallbackName = email.split('@')[0];
-                    // Capitalize the first letter for a clean look
-                    const dynamicName = fallbackName.charAt(0).toUpperCase() + fallbackName.slice(1);
-                    user = { name: dynamicName, email: email };
-                    // FIX END
+                    user = { name: "Test User", email: email };
                     saveData();
                 }
                 
