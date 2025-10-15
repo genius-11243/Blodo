@@ -43,6 +43,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            /* Approximate height of the header */
+            min-height: 100px;
         }
         
         .header-content {
@@ -145,6 +147,28 @@
             border-color: #007bff;
             box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
             outline: none;
+        }
+        
+        /* PASSWORD VISIBILITY STYLES */
+        .password-container {
+            position: relative;
+        }
+        .password-container input {
+            padding-right: 40px !important; /* Make space for the icon */
+        }
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #999;
+            font-size: 1rem;
+            transition: color 0.2s;
+            z-index: 10;
+        }
+        .toggle-password:hover {
+            color: #dc3545;
         }
 
         button {
@@ -328,7 +352,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Sidebar Styling */
+        /* Sidebar Toggle Styling (Left Button) */
         .sidebar-toggle {
             position: fixed;
             top: 25px;
@@ -349,19 +373,41 @@
             transition: transform 0.3s ease-in-out;
         }
 
-        .sidebar-toggle:hover {
+        /* New style for the persistent Home button (Right Button) */
+        .home-button-toggle {
+            position: fixed;
+            top: 25px;
+            right: 20px; /* Position on the right side */
+            width: 50px;
+            height: 50px;
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.8rem;
+            z-index: 1001; /* Ensure it's above the header */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .sidebar-toggle:hover, .home-button-toggle:hover {
             transform: scale(1.1);
         }
 
         .sidebar {
             position: fixed;
-            top: 0;
+            /* FIX 1: Shift sidebar below the header */
+            top: 100px; 
             left: calc(-1 * var(--sidebar-width));
             width: var(--sidebar-width);
-            height: 100%;
+            height: calc(100vh - 100px); /* Fill remaining viewport height */
             background-color: #2c2f33;
             color: #fff;
-            padding-top: 100px;
+            padding-top: 0;
             transition: left 0.3s ease-in-out;
             z-index: 999;
             box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
@@ -442,6 +488,36 @@
         .review-card .card-rating .fa-star.checked {
             color: gold; /* Only checked stars are gold */
         }
+        
+        /* Edit button on review card */
+        .review-card .edit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.2s;
+        }
+        .review-card .edit-btn:hover {
+            background-color: #0056b3;
+            transform: none; /* Override general button hover transform */
+            box-shadow: none;
+        }
+        
+        /* --- Sticker Selector --- */
+        .sticker-option {
+            cursor: pointer;
+            transition: transform 0.2s;
+            opacity: 0.8;
+            padding: 5px; /* Increase hit area */
+        }
+        .sticker-option:hover {
+            transform: scale(1.3);
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -457,9 +533,14 @@
     <button class="sidebar-toggle" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
     </button>
+    
+    <button class="home-button-toggle" onclick="goToHome()">
+        <i class="fas fa-home"></i>
+    </button>
+    
     <aside class="sidebar" id="sidebar">
         <ul>
-            <li onclick="toggleSidebar(); goToHome()"><i class="fas fa-home"></i> Home</li>
+            <li onclick="toggleSidebar(); goToHome()"><i class="fas fa-home"></i> Home</li> 
             <li onclick="toggleSidebar(); startDonation()" id="donate-sidebar-link" style="display:none;"><i class="fas fa-hand-holding-heart"></i> Donate Blood</li>
             <li onclick="toggleSidebar(); startRequest()" id="request-sidebar-link" style="display:none;"><i class="fas fa-hand-holding-medical"></i> Request Blood</li>
             <li onclick="toggleSidebar(); showReportsPage()" id="reports-sidebar-link" style="display:none;"><i class="fas fa-chart-bar"></i> View Reports</li>
@@ -501,7 +582,10 @@
                 </div>
                 <div class="form-group">
                     <label for="signupPassword">Password:</label>
-                    <input type="password" id="signupPassword" name="signupPassword" required>
+                    <div class="password-container">
+                        <input type="password" id="signupPassword" name="signupPassword" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('signupPassword', this)"></i>
+                    </div>
                 </div>
                 <div class="dual-buttons">
                     <button type="button" onclick="goBack()">Go Back</button>
@@ -525,7 +609,10 @@
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Password:</label>
-                    <input type="password" id="loginPassword" name="loginPassword" required>
+                    <div class="password-container">
+                        <input type="password" id="loginPassword" name="loginPassword" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('loginPassword', this)"></i>
+                    </div>
                 </div>
                 <div class="dual-buttons">
                     <button type="button" onclick="goBack()">Go Back</button>
@@ -569,15 +656,24 @@
             <form id="changePasswordForm" onsubmit="changePassword(event)">
                 <div class="form-group">
                     <label for="currentPassword">Current Password:</label>
-                    <input type="password" id="currentPassword" name="currentPassword" required>
+                    <div class="password-container">
+                        <input type="password" id="currentPassword" name="currentPassword" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('currentPassword', this)"></i>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="newPassword">New Password:</label>
-                    <input type="password" id="newPassword" name="newPassword" required>
+                    <div class="password-container">
+                        <input type="password" id="newPassword" name="newPassword" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('newPassword', this)"></i>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="confirmNewPassword">Confirm New Password:</label>
-                    <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+                    <div class="password-container">
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility('confirmNewPassword', this)"></i>
+                    </div>
                 </div>
                 <div class="dual-buttons">
                     <button type="button" onclick="goBack()">Go Back</button>
@@ -615,6 +711,18 @@
                     </div>
                     <input type="hidden" id="reviewRating" name="reviewRating" value="0" required>
                 </div>
+                
+                <div class="form-group">
+                    <label>Add a Sticker (Optional - click to prepend to comment):</label>
+                    <div id="sticker-selector" style="display: flex; gap: 15px; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                        <span class="sticker-option" data-sticker="❤️" title="Love It" onclick="addSticker(this)">❤️</span>
+                        <span class="sticker-option" data-sticker="👍" title="Thumbs Up" onclick="addSticker(this)">👍</span>
+                        <span class="sticker-option" data-sticker="🌟" title="Five Stars" onclick="addSticker(this)">🌟</span>
+                        <span class="sticker-option" data-sticker="😊" title="Happy" onclick="addSticker(this)">😊</span>
+                        <span class="sticker-option" data-sticker="🩸" title="Blood Drop" onclick="addSticker(this)">🩸</span>
+                    </div>
+                </div>
+                
                 <div class="form-group">
                     <label for="reviewComment">Comments / Suggestions:</label>
                     <textarea id="reviewComment" rows="5" placeholder="Share your experience with BLODO..." required></textarea>
@@ -630,7 +738,7 @@
     <main id="reviews-history-page">
         <div class="container">
             <h2>Community Reviews</h2>
-            <p>See what others are saying about the BLODO service. Your review will be marked with **(You)**.</p>
+            <p>See what others are saying about the BLODO service. Your review will be marked with **(You)** and have an **Edit button**.</p>
             <div id="reviews-list-container" class="reviews-list-container" style="margin-top: 1.5rem;">
                 <p id="no-reviews-message" style="text-align: center; color: #777;">No reviews have been submitted yet.</p>
             </div>
@@ -889,7 +997,7 @@
     
     <main id="review-thank-you-page">
         <div class="container thank-you-page">
-            <h2>Review Submitted!</h2>
+            <h2>Review Updated!</h2>
             <p>Thank you for your valuable feedback. It helps us improve BLODO!</p>
             <p>You can see your review and others on the "View Reviews" page.</p>
             <button onclick="showReviewsHistoryPage()">View Reviews</button>
@@ -1026,7 +1134,7 @@
         // Helper function to show a temporary message
         function showMessage(elementId, message) {
             const feedbackElement = document.getElementById(elementId);
-            feedbackElement.textContent = message;
+            feedbackElement.innerHTML = message;
             feedbackElement.style.opacity = '1';
             clearTimeout(feedbackTimer);
             feedbackTimer = setTimeout(() => {
@@ -1076,6 +1184,20 @@
             sidebar.classList.toggle('open');
         }
 
+        // Toggle password visibility
+        function togglePasswordVisibility(id, iconElement) {
+            const input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+                iconElement.classList.remove('fa-eye');
+                iconElement.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                iconElement.classList.remove('fa-eye-slash');
+                iconElement.classList.add('fa-eye');
+            }
+        }
+
         // Handles the persistent login process
         function login(event) {
             event.preventDefault();
@@ -1097,7 +1219,10 @@
                 if (storedUser) {
                     user = storedUser;
                 } else {
-                    user = { name: "Test User", email: email };
+                    // Using email prefix as dynamic name if no user is found
+                    const fallbackName = email.split('@')[0];
+                    const dynamicName = fallbackName.charAt(0).toUpperCase() + fallbackName.slice(1);
+                    user = { name: dynamicName, email: email };
                     saveData();
                 }
                 
@@ -1165,8 +1290,8 @@
                 const hasReviewed = allReviews.some(r => r.email === user.email && !r.isDummy);
                 const reviewLink = document.getElementById('review-sidebar-link');
 
-                if (hasDonatedOrRequested && !hasReviewed) {
-                    // Show 'Submit Review' only if user has interacted AND hasn't reviewed yet
+                if (hasDonatedOrRequested || hasReviewed) {
+                    // Show link if they can submit a new review OR edit an existing one
                     reviewLink.style.display = 'flex';
                 } else {
                     reviewLink.style.display = 'none';
@@ -1374,6 +1499,43 @@
         }
         
         // --- REVIEW FUNCTIONS ---
+        
+        // NEW FUNCTION: Initiates the review editing process
+        function startReviewEdit(reviewIndex) {
+            if (!user) {
+                alert("Please log in to edit your review.");
+                showSection('login-form');
+                return;
+            }
+            
+            const reviewToEdit = allReviews[reviewIndex];
+            
+            // Store the index to be edited in a form data attribute
+            document.getElementById('reviewForm').dataset.editIndex = reviewIndex; 
+
+            // Populate form fields
+            // Clean up sticker if it's at the start of the comment for editing readability
+            const cleanedComment = reviewToEdit.comment.replace(/^(❤️|👍|🌟|😊|🩸)\s*/, '').trim();
+            document.getElementById('reviewComment').value = cleanedComment;
+            document.getElementById('reviewRating').value = reviewToEdit.rating;
+
+            // Update star display
+            document.querySelectorAll('#rating-stars .fa-star').forEach(star => {
+                if (parseInt(star.dataset.rating) <= reviewToEdit.rating) {
+                    star.classList.add('checked');
+                } else {
+                    star.classList.remove('checked');
+                }
+            });
+
+            // Change button text and title for edit mode
+            document.querySelector('#review-form-page h2').textContent = "Edit Your Review";
+            document.querySelector('#reviewForm button[type="submit"]').textContent = "Update Review";
+            
+            showSection('review-form-page');
+        }
+        
+        // Handles showing the review form (now defaults to edit if a review exists)
         function showReviewForm() {
             if (!user) {
                 alert("Please log in to submit a review.");
@@ -1381,427 +1543,184 @@
                 return;
             }
             
-            // Check if user has already reviewed
-            if (allReviews.some(r => r.email === user.email && !r.isDummy)) {
-                alert("You have already submitted a review. You can view it on the 'View Reviews' page.");
-                showReviewsHistoryPage();
+            // Reset form/state for a potentially new review
+            document.getElementById('reviewForm').removeAttribute('data-edit-index');
+            document.getElementById('reviewForm').reset();
+            document.getElementById('reviewRating').value = 0;
+            document.querySelector('#review-form-page h2').textContent = "Submit a Review";
+            document.querySelector('#reviewForm button[type="submit"]').textContent = "Submit Review";
+            document.querySelectorAll('#rating-stars .fa-star').forEach(star => star.classList.remove('checked'));
+            
+            // Check if user has an existing review and pre-populate for editing
+            const existingReviewIndex = allReviews.findIndex(r => r.email === user.email && !r.isDummy);
+
+            if (existingReviewIndex !== -1) {
+                // If they click 'Submit Review' and already have one, treat it as an implicit edit
+                startReviewEdit(existingReviewIndex);
                 return;
             }
-            
-            // Clear review form fields and rating state on load
-            document.getElementById('reviewForm').reset();
-            document.getElementById('reviewRating').value = "0";
-            document.querySelectorAll('.rating-stars .fa-star').forEach(star => {
-                star.classList.remove('checked');
-            });
             
             showSection('review-form-page');
         }
-        
+
+        // Submits new review or updates existing one
         function submitReview(event) {
             event.preventDefault();
-            const rating = document.getElementById('reviewRating').value;
-            const comment = document.getElementById('reviewComment').value.trim();
             
-            if (rating === "0") {
-                showMessage('review-feedback', "Please select a star rating.");
+            const rating = parseInt(document.getElementById('reviewRating').value);
+            const commentInput = document.getElementById('reviewComment');
+            let comment = commentInput.value.trim();
+            
+            if (rating === 0 || comment === "") {
+                showMessage('review-feedback', "Please provide a rating and a comment.");
                 return;
             }
             
-            // Prevent multiple reviews from the same user 
-            if (allReviews.some(r => r.email === user.email && !r.isDummy)) {
-                showMessage('review-feedback', "You have already submitted a review.");
-                return;
-            }
+            // Check for sticker to prepend
+            const stickerMatch = comment.match(/^(❤️|👍|🌟|😊|🩸)\s*/);
+            let sticker = stickerMatch ? stickerMatch[1] : '';
 
-            const reviewData = {
-                name: user.name,
-                email: user.email,
-                rating: parseInt(rating),
-                comment: comment,
+            // If a sticker was added via the click function, prepend it (only if not already there)
+            if (!sticker && commentInput.dataset.stickerToPrepend) {
+                sticker = commentInput.dataset.stickerToPrepend;
+                comment = sticker + ' ' + comment;
+            }
+            
+            // Clear sticker state
+            delete commentInput.dataset.stickerToPrepend;
+            
+            const newReview = { 
+                name: user.name, 
+                email: user.email, 
+                rating: rating, 
+                comment: comment, 
                 date: new Date().toLocaleDateString('en-US'),
-                isDummy: false // Mark as a real user review
+                isDummy: false
             };
             
-            allReviews.push(reviewData);
-            saveData();
+            const editIndex = document.getElementById('reviewForm').dataset.editIndex;
+            let message = "Review submitted successfully!";
             
-            // Update sidebar state to hide 'Submit Review'
-            startSession();
+            if (editIndex !== undefined && editIndex !== '') {
+                // EDIT MODE: Update existing review at the stored index
+                allReviews[parseInt(editIndex)] = newReview;
+                message = "Review updated successfully!";
+            } else {
+                // NEW REVIEW MODE: Check for existing non-dummy review and replace it (ensuring only one user review exists)
+                const existingReviewIndex = allReviews.findIndex(r => r.email === user.email && !r.isDummy);
+                if (existingReviewIndex !== -1) {
+                    allReviews[existingReviewIndex] = newReview; // Replace old user review
+                } else {
+                    allReviews.push(newReview); // Add new user review
+                }
+            }
 
+            saveData();
+            startSession(); // Re-check sidebar visibility
+            showMessage('review-feedback', message);
+            
+            // Navigate to thank you page
             showSection('review-thank-you-page');
         }
         
-        // --- REVIEWS HISTORY FUNCTIONS (displays all reviews) ---
         function showReviewsHistoryPage() {
-            showSection('reviews-history-page');
             renderReviews();
+            showSection('reviews-history-page');
         }
-        
+
+        // Renders all reviews and includes the EDIT button for the current user's review
         function renderReviews() {
-            const container = document.getElementById('reviews-list-container');
-            
-            // Filter out the user's *own* review to render separately, then combine and sort.
-            let userReview = null;
-            let otherReviews = [];
-            
-            if (user) {
-                userReview = allReviews.find(r => r.email === user.email && !r.isDummy);
-                // Filter out the user's non-dummy review from the general list before sorting
-                otherReviews = allReviews.filter(r => r !== userReview);
-            } else {
-                otherReviews = allReviews;
-            }
-            
-            // Check for no reviews
-            if (otherReviews.length === 0 && !userReview) {
-                container.innerHTML = '<p id="no-reviews-message" style="text-align: center; color: #777;">No reviews have been submitted yet.</p>';
+            const listContainer = document.getElementById('reviews-list-container');
+            listContainer.innerHTML = ''; // Clear previous content
+
+            // Sort non-dummy reviews first, then dummy ones, and newest user review first
+            const sortedReviews = allReviews.sort((a, b) => {
+                if (a.isDummy === b.isDummy) {
+                    // Sort non-dummy reviews by date descending (newest first)
+                    if (!a.isDummy) {
+                        return new Date(b.date) - new Date(a.date);
+                    }
+                    // Keep dummy order stable
+                    return 0; 
+                }
+                return a.isDummy ? 1 : -1; // Non-dummy reviews appear before dummy ones
+            });
+
+            if (sortedReviews.length === 0) {
+                listContainer.innerHTML = '<p id="no-reviews-message" style="text-align: center; color: #777;">No reviews have been submitted yet.</p>';
                 return;
             }
-            
-            let listHTML = '';
-            
-            // Sort other reviews by date (newest first, just assuming dummy dates are already somewhat sequential or random)
-            const sortedReviews = [...otherReviews].sort((a, b) => {
-                // Parse dates for accurate sorting
-                const dateA = new Date(a.date);
-                const dateB = new Date(b.date);
-                return dateB - dateA;
-            });
-            
-            // Prepend the user's review to the list if it exists
-            const finalReviewsList = userReview ? [userReview, ...sortedReviews] : sortedReviews;
-            
-            // Iterate through ALL reviews 
-            finalReviewsList.forEach(review => {
-                // Determine if this is the current user's review
-                const isUserReview = user && review.email === user.email && !review.isDummy;
-                const reviewerName = isUserReview ? `${review.name} (You)` : review.name;
-                
-                // Create star rating icons
-                const starIcons = Array(5).fill().map((_, i) => 
-                    `<i class="fas fa-star ${i < review.rating ? 'checked' : ''}"></i>`
-                ).join('');
 
-                listHTML += `
-                    <div class="review-card">
-                        <p><strong>${reviewerName}</strong> on ${review.date}</p>
-                        <p class="card-rating">${starIcons}</p>
-                        <p style="margin-top: 10px;">${review.comment}</p>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = listHTML;
-        }
+            sortedReviews.forEach((r, i) => {
+                let stars = '';
+                for (let j = 1; j <= 5; j++) {
+                    stars += `<i class="fas fa-star ${j <= r.rating ? 'checked' : ''}"></i>`;
+                }
 
-        // --- AWARDS & BADGES FUNCTIONS ---
-        function showAwardsBadges() {
-            if (!user) {
-                alert("Please log in to view your awards.");
-                showSection('login-form');
-                return;
-            }
-            showSection('awards-badges-page');
-            renderAwardsBadges();
-        }
-        
-        function renderAwardsBadges() {
-            const container = document.getElementById('awards-grid');
-            const userDonations = allDonations.filter(d => d.email === user.email);
-            
-            let badgesHTML = '';
-            
-            AWARDS.forEach(award => {
-                let unlocked = false;
+                let reviewerName = r.name;
+                let editButton = '';
                 
-                if (award.customCheck) {
-                    unlocked = award.customCheck(userDonations);
-                } else if (award.requiredDonations) {
-                    unlocked = userDonations.length >= award.requiredDonations;
+                // ADD EDIT BUTTON next to the user's non-dummy review
+                if (user && r.email === user.email && !r.isDummy) {
+                    reviewerName += ' <strong>(You)</strong>';
+                    // Pass the index of the review in the ALL_REVIEWS array
+                    const reviewIndexInAllReviews = allReviews.findIndex(review => review.email === r.email && !review.isDummy);
+                    editButton = `<button class="edit-btn" onclick="startReviewEdit(${reviewIndexInAllReviews})"><i class="fas fa-edit"></i> Edit</button>`;
+                } else if (r.isDummy) {
+                    // For display purposes, use a simplified name for dummy reviews
+                    reviewerName = r.name.split(' ')[0] + ' ' + r.name.split(' ')[1].charAt(0) + '.';
                 }
                 
-                const cardClass = unlocked ? 'unlocked' : '';
-                const title = unlocked ? award.name : '???';
-                const description = unlocked ? award.description : 'Keep donating to unlock this award!';
-                const iconColor = unlocked ? 'gold' : '#ccc';
-
-                badgesHTML += `
-                    <div class="badge-card ${cardClass}" title="${description}">
-                        <i class="${award.icon} badge-icon"></i>
-                        <p class="badge-name">${title}</p>
-                        <small>${description}</small>
+                const reviewHtml = `
+                    <div class="review-card">
+                        <p><strong>${reviewerName}</strong> ${editButton}</p>
+                        <p class="card-rating">${stars}</p>
+                        <p>${r.comment}</p>
+                        <p style="font-size: 0.8rem; color: #999;">Reviewed on: ${r.date}</p>
                     </div>
                 `;
+                listContainer.innerHTML += reviewHtml;
             });
-            
-            if (userDonations.length === 0) {
-                badgesHTML = '<p style="grid-column: 1 / -1; color: #777;">No donations recorded yet. Complete your first donation to earn your "First Timer" badge!</p>' + badgesHTML;
-            }
-            
-            container.innerHTML = badgesHTML;
-        }
-        // --- END AWARDS & BADGES FUNCTIONS ---
-
-
-        // View Reports Functionality
-        function showReportsPage() {
-            if (!user) {
-                alert("Please log in to view reports.");
-                showSection('login-form');
-                return;
-            }
-            showSection('reports-page');
-            renderDonationsTable();
-            renderRequestsTable();
-        }
-
-        function renderDonationsTable() {
-            const container = document.getElementById('donations-table-container');
-            if (allDonations.length === 0) {
-                container.innerHTML = '<p id="no-donations-message" style="text-align: center; color: #777;">No donations have been submitted yet.</p>';
-                return;
-            }
-            
-            // Added 'Action' column
-            let tableHTML = '<table><thead><tr><th>Name</th><th>Email</th><th>Age</th><th>Blood Type</th><th>City</th><th>Hospital</th><th>Date</th><th>Sicknesses</th><th>Action</th></tr></thead><tbody>';
-            
-            allDonations.forEach((donation, index) => { // Added index for deletion
-                tableHTML += `<tr>
-                    <td>${donation.name}</td>
-                    <td>${donation.email}</td>
-                    <td>${donation.age}</td>
-                    <td>${donation.bloodType}</td>
-                    <td>${donation.city}</td>
-                    <td>${donation.hospital}</td>
-                    <td>${donation.date}</td>
-                    <td>${donation.sickness}</td>
-                    <td><button onclick="deleteDonation(${index})" style="padding: 5px 10px; background-color: #f44336; font-size: 0.8rem; border-radius: 5px; box-shadow: none;">Delete</button></td>
-                </tr>`;
-            });
-            tableHTML += '</tbody></table>';
-            container.innerHTML = tableHTML;
-        }
-
-        function deleteDonation(index) {
-            if (confirm("Are you sure you want to delete this donation record? This will also update your awards/badges.")) {
-                // Remove the item at the given index
-                allDonations.splice(index, 1);
-                
-                // Re-check awards/badges and update local storage
-                saveData();
-                
-                // Re-render the table to reflect the change
-                renderDonationsTable();
-                
-                // Update sidebar (in case donation count affected review status/awards)
-                startSession();
-            }
         }
         
-        function renderRequestsTable() {
-            const container = document.getElementById('requests-table-container');
-            if (allRequests.length === 0) {
-                container.innerHTML = '<p id="no-requests-message" style="text-align: center; color: #777;">No requests have been submitted yet.</p>';
-                return;
-            }
-
-            let tableHTML = '<table><thead><tr><th>Name</th><th>Email</th><th>Blood Type</th><th>City</th><th>Date</th><th>Reason</th></tr></thead><tbody>';
-            allRequests.forEach(request => {
-                tableHTML += `<tr>
-                    <td>${request.name}</td>
-                    <td>${request.email}</td>
-                    <td>${request.bloodType}</td>
-                    <td>${request.city}</td>
-                    <td>${request.date}</td>
-                    <td>${request.reason}</td>
-                </tr>`;
-            });
-            tableHTML += '</tbody></table>';
-            container.innerHTML = tableHTML;
-        }
-        
-        function exportToExcel() {
-            const donationsCsv = convertToCsv(allDonations, ['name', 'email', 'age', 'bloodType', 'city', 'hospital', 'date', 'sickness']);
-            const requestsCsv = convertToCsv(allRequests, ['name', 'email', 'bloodType', 'city', 'date', 'reason']);
-            const reviewsCsv = convertToCsv(allReviews, ['name', 'email', 'rating', 'comment', 'date']);
+        // Adds a sticker to a data attribute for use when submitting
+        function addSticker(element) {
+            const sticker = element.dataset.sticker;
+            const commentInput = document.getElementById('reviewComment');
             
-            let combinedCsv = '';
+            // Store sticker to be prepended in submitReview
+            commentInput.dataset.stickerToPrepend = sticker;
             
-            if (donationsCsv) {
-                combinedCsv += 'Donations\n';
-                combinedCsv += donationsCsv;
-            }
-            
-            if (requestsCsv) {
-                if (combinedCsv) { combinedCsv += '\n\n'; }
-                combinedCsv += 'Requests\n';
-                combinedCsv += requestsCsv;
-            }
-            
-            if (reviewsCsv) {
-                if (combinedCsv) { combinedCsv += '\n\n'; }
-                combinedCsv += 'Reviews\n';
-                combinedCsv += reviewsCsv;
-            }
-            
-            if (!combinedCsv) {
-                alert("There is no data to export.");
-                return;
-            }
-            
-            // Add UTF-8 BOM to ensure correct display in Excel
-            const bom = '\uFEFF';
-            const finalCsv = bom + combinedCsv;
-            
-            const blob = new Blob([finalCsv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", "BLODO_Report.csv");
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-        
-        function convertToCsv(data, headers) {
-            if (data.length === 0) return '';
-            
-            let csv = headers.join(',') + '\n';
-            data.forEach(item => {
-                const row = headers.map(header => {
-                    let value = item[header] || '';
-                    value = String(value).replace(/"/g, '""');
-                    if (value.includes(',') || value.includes('\n') || value.includes('"')) {
-                        value = `"${value}"`;
-                    }
-                    return value;
-                });
-                csv += row.join(',') + '\n';
-            });
-            return csv;
-        }
-        
-        // Clears all data from the app and Local Storage
-        function resetData() {
-            if (confirm("Are you sure you want to clear all data? This action cannot be undone.")) {
-                // Preserve only dummy reviews, clear all user-specific data
-                const dummyReviews = allReviews.filter(r => r.isDummy);
-                allDonations = [];
-                allRequests = [];
-                allReviews = dummyReviews; // Keep the dummy reviews
-                hasDonatedOrRequested = false;
-                
-                // Clear all data, then re-save the new initial state
-                localStorage.clear(); 
-                saveData(); 
-                
-                logout(); // Reset user session
-                renderDonationsTable();
-                renderRequestsTable();
-                alert("All user-specific data has been cleared. Dummy reviews have been preserved. Please log in again to continue.");
-            }
+            // Also, update the display value immediately (non-sticky parts only)
+            const currentComment = commentInput.value.replace(/^(❤️|👍|🌟|😊|🩸)\s*/, '').trim();
+            commentInput.value = sticker + ' ' + currentComment;
+            commentInput.focus();
         }
 
-        function showLogin() {
-            showSection('login-form');
-        }
 
-        function showSignup() {
-            showSection('signup-form');
-        }
+        // --- Star Rating Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const ratingStars = document.getElementById('rating-stars');
+            const reviewRatingInput = document.getElementById('reviewRating');
 
-        function showAccount() {
-            if (user) {
-                showSection('account-page');
-            } else {
-                alert("Please log in to view your account.");
-                showSection('login-form');
-            }
-        }
-        
-        function showChangePassword() {
-            if (user) {
-                showSection('change-password-page');
-            } else {
-                alert("Please log in to change your password.");
-                showSection('login-form');
-            }
-        }
+            if (ratingStars) {
+                ratingStars.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('fa-star')) {
+                        const rating = parseInt(e.target.dataset.rating);
+                        reviewRatingInput.value = rating;
 
-        // Updates the persistent password
-        function changePassword(event) {
-            event.preventDefault();
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-
-            if (currentPassword !== userPassword) {
-                showMessage('password-feedback', "Current password is incorrect.");
-                return;
-            }
-
-            if (newPassword !== confirmNewPassword) {
-                showMessage('password-feedback', "New passwords do not match.");
-                return;
-            }
-
-            userPassword = newPassword;
-            localStorage.setItem('userPassword', userPassword); // Save new password
-            showMessage('password-feedback', "Password changed successfully!");
-        }
-
-        // Clears the user session from memory and Local Storage
-        function logout() {
-            user = null;
-            localStorage.removeItem('currentUser'); // Remove session from storage
-            isLoggedIn = false;
-            startSession(); // Reset view to main page
-        }
-        
-        // Star Rating Logic
-        function setupStarRating() {
-            const stars = document.querySelectorAll('#rating-stars .fa-star');
-            const ratingInput = document.getElementById('reviewRating');
-
-            stars.forEach(star => {
-                star.addEventListener('click', function() {
-                    const ratingValue = this.getAttribute('data-rating');
-                    ratingInput.value = ratingValue;
-                    
-                    stars.forEach(s => s.classList.remove('checked'));
-                    for (let i = 0; i < ratingValue; i++) {
-                        stars[i].classList.add('checked');
+                        document.querySelectorAll('#rating-stars .fa-star').forEach(star => {
+                            if (parseInt(star.dataset.rating) <= rating) {
+                                star.classList.add('checked');
+                            } else {
+                                star.classList.remove('checked');
+                            }
+                        });
                     }
                 });
-                
-                // Add hover effect for visual feedback
-                star.addEventListener('mouseover', function() {
-                    const ratingValue = this.getAttribute('data-rating');
-                    stars.forEach(s => s.classList.remove('hover'));
-                    for (let i = 0; i < ratingValue; i++) {
-                        stars[i].classList.add('hover');
-                    }
-                });
-                
-                star.addEventListener('mouseout', function() {
-                    stars.forEach(s => s.classList.remove('hover'));
-                    // Restore checked state if user hasn't clicked
-                    if (ratingInput.value !== "0") {
-                        for (let i = 0; i < ratingInput.value; i++) {
-                            stars[i].classList.add('checked');
-                        }
-                    }
-                });
-            });
-        }
-
-        // Event listeners for "Other" input animation
-        document.addEventListener('DOMContentLoaded', function() {
-            // Setup the star rating functionality
-            setupStarRating(); 
+            }
             
+            // Initialize visibility/logic for city/hospital fields
             const citySelect = document.getElementById('city');
             const otherCityInput = document.getElementById('otherCity').parentElement;
             if (citySelect) {
