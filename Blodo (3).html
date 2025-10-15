@@ -209,6 +209,29 @@
         .welcome-page {
             text-align: center;
         }
+        
+        /* NEW: Reminder Banner Style */
+        .reminder-banner {
+            background-color: #ffc107;
+            color: #333;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: pulse 1.5s infinite;
+        }
+
+        /* NEW: Pulse animation for the reminder banner */
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4); }
+            50% { box-shadow: 0 4px 20px rgba(255, 193, 7, 0.8); }
+            100% { box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4); }
+        }
 
         .question-page {
             padding: 1.5rem 0;
@@ -229,6 +252,20 @@
         .thank-you-page h2 {
             color: #28a745;
         }
+        
+        /* NEW: Confirmation Page Styling */
+        #confirm-attendance-page h2 {
+            color: #dc3545;
+        }
+        #confirm-attendance-page p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        #confirm-attendance-page strong {
+            color: #007bff;
+        }
+
 
         .feedback-message {
             text-align: center;
@@ -627,12 +664,27 @@
 
     <main id="welcome-page">
         <div class="container welcome-page">
+            
+            <div id="appointment-reminder" class="reminder-banner" style="display:none;">
+                <i class="fas fa-bell"></i> 
+                <span id="reminder-text"></span>
+            </div>
+
             <h2>Welcome, <span id="welcomeName"></span>!</h2>
             <p>What would you like to do today?</p>
             <div class="main-page-buttons">
                 <button onclick="startDonation()">Start Donation</button>
                 <button onclick="startRequest()">Request Blood</button>
             </div>
+            
+             <div id="upcoming-appointment-card" class="review-card" style="margin-top: 2rem; display: none;">
+                <p><strong>Upcoming Donation Appointment:</strong></p>
+                <p>Date: <span id="upcoming-date"></span></p>
+                <p>Hospital: <span id="upcoming-hospital"></span></p>
+                <p style="font-size: 0.9rem; color: #dc3545; margin-top: 10px;">To change this, simply start a new donation process which will overwrite this appointment.</p>
+                <button onclick="clearUnconfirmedDonation()" style="background-color: #f44336; width: 100%; margin-top: 0.5rem;">Clear Appointment</button>
+            </div>
+            
         </div>
     </main>
 
@@ -928,7 +980,7 @@
             <p><strong>Sicknesses:</strong> <span id="reviewSickness"></span></p>
             <div class="dual-buttons">
                 <button onclick="goBack()">Go Back</button>
-                <button onclick="confirmDonation()">Confirm</button>
+                <button onclick="confirmDonation()">Confirm Appointment</button>
             </div>
         </div>
     </main>
@@ -977,13 +1029,27 @@
             </div>
         </div>
     </main>
-
+    
+    <main id="confirm-attendance-page">
+        <div class="container">
+            <h2><i class="fas fa-question-circle" style="color: #dc3545;"></i> Did You Attend?</h2>
+            <p>We see your scheduled appointment for **<strong id="unconfirmed-date-display"></strong>** at **<strong id="unconfirmed-hospital-display"></strong>** has passed. Can you confirm if you attended your donation appointment?</p>
+            <p>Your honest response helps us keep your donor records and badge progress accurate.</p>
+            <div class="dual-buttons">
+                <button onclick="confirmAttendance(true)" style="background-color: #28a745;">
+                    <i class="fas fa-check-circle"></i> Yes, I went!
+                </button>
+                <button onclick="confirmAttendance(false)" style="background-color: #f44336;">
+                    <i class="fas fa-times-circle"></i> No, I missed it.
+                </button>
+            </div>
+        </div>
+    </main>
     <main id="thank-you-page">
         <div class="container thank-you-page">
-            <h2>Thank You!</h2>
-            <p>Your donation is greatly appreciated. You've made a difference!</p>
-            <p>We will contact you shortly.</p>
-            <button onclick="goToHome()">Start Over</button>
+            <h2>Appointment Confirmed!</h2>
+            <p>Your appointment for **<span id="confirmed-date"></span>** is now recorded as a **pending donation**. We will ask you to confirm your attendance on your next visit after the scheduled date.</p>
+            <button onclick="goToHome()">Return Home</button>
         </div>
     </main>
 
@@ -1013,6 +1079,8 @@
         let feedbackTimer = null;
         let allDonations = JSON.parse(localStorage.getItem('allDonations')) || [];
         let allRequests = JSON.parse(localStorage.getItem('allRequests')) || [];
+        // NEW: unconfirmedDonation tracks the ID and details of the most recent donation that needs confirmation
+        let unconfirmedDonation = JSON.parse(localStorage.getItem('unconfirmedDonation')) || null; 
         
         let isLoggedIn = user !== null;
         let allReviews = JSON.parse(localStorage.getItem('allReviews')) || [];
@@ -1025,7 +1093,7 @@
             { id: 'annual-champion', name: 'Annual Champion', description: 'Complete 6 donations in one year.', icon: 'fas fa-calendar-check', requiredDonations: 6, customCheck: (userDonations) => {
                 const oneYearAgo = new Date();
                 oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-                return userDonations.filter(d => new Date(d.date) >= oneYearAgo).length >= 6;
+                return userDonations.filter(d => d.confirmed !== false && new Date(d.date) >= oneYearAgo).length >= 6;
             }}
         ];
         
@@ -1121,14 +1189,44 @@
         // Tracks if user has completed a donation or request to enable review submission
         let hasDonatedOrRequested = localStorage.getItem('hasDonatedOrRequested') === 'true';
 
+        // Helper function to format a date string (YYYY-MM-DD) into a readable format
+        function formatReadableDate(dateString) {
+            try {
+                const [year, month, day] = dateString.split('-');
+                const date = new Date(year, month - 1, day);
+                return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            } catch (e) {
+                return dateString;
+            }
+        }
+        
+        // Helper function to get today's date in YYYY-MM-DD format
+        function getTodayDateString() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = (today.getMonth() + 1).toString().padStart(2, '0');
+            const day = today.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        // Helper to get a date string for X days ago/from now
+        function getDateStringFromDate(date) {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         // Function to save all persistent data to Local Storage
         function saveData() {
             localStorage.setItem('currentUser', JSON.stringify(user));
             localStorage.setItem('userPassword', userPassword);
-            localStorage.setItem('allDonations', JSON.stringify(allDonations));
+            // Only store donations that were either confirmed or are upcoming/unconfirmed
+            localStorage.setItem('allDonations', JSON.stringify(allDonations.filter(d => d.confirmed !== false))); 
             localStorage.setItem('allRequests', JSON.stringify(allRequests));
             localStorage.setItem('allReviews', JSON.stringify(allReviews));
             localStorage.setItem('hasDonatedOrRequested', hasDonatedOrRequested);
+            localStorage.setItem('unconfirmedDonation', JSON.stringify(unconfirmedDonation)); // NEW TRACKER
         }
 
         // Helper function to show a temporary message
@@ -1163,7 +1261,11 @@
         function showReportsPage() {
             // 1. Render Donations Table
             const donationsContainer = document.getElementById('donations-table-container');
-            if (allDonations.length === 0) {
+            
+            // Only show donations that haven't been marked as MISSED (confirmed !== false)
+            const confirmedDonations = allDonations.filter(d => d.confirmed !== false);
+
+            if (confirmedDonations.length === 0) {
                 donationsContainer.innerHTML = '<p id="no-donations-message" style="text-align: center; color: #777;">No donations have been submitted yet.</p>';
             } else {
                 let tableHtml = `
@@ -1173,30 +1275,45 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Blood Type</th>
-                                <th>City</th>
                                 <th>Hospital</th>
                                 <th>Date</th>
-                                <th>Sicknesses</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>`;
-                allDonations.forEach(d => {
+                confirmedDonations.forEach(d => {
+                    // Display status based on unconfirmedDonation state and date
+                    let status = 'Confirmed';
+                    if (unconfirmedDonation && d.donationId === unconfirmedDonation.id) {
+                         // Check if the appointment date is today or in the future
+                        if (new Date(d.date) >= new Date(getTodayDateString())) {
+                            status = `<span style="color: #007bff; font-weight: 600;">Upcoming (${formatReadableDate(d.date)})</span>`;
+                        } else {
+                             // If it's the unconfirmed one but the date is past
+                            status = `<span style="color: #ffc107; font-weight: 600;">Attendance Pending</span>`;
+                        }
+                    } else if (d.confirmed === true) {
+                        status = `<span style="color: #28a745; font-weight: 600;">Completed</span>`;
+                    } else if (d.confirmed === undefined && new Date(d.date) < new Date(getTodayDateString())) {
+                        // Older donations that somehow missed the check. Default to completed for reporting accuracy.
+                        status = `<span style="color: #28a745; font-weight: 600;">Completed</span>`;
+                    }
+                    
                     tableHtml += `
                         <tr>
                             <td>${d.name}</td>
                             <td>${d.email}</td>
                             <td>${d.bloodType}</td>
-                            <td>${d.city}</td>
                             <td>${d.hospital}</td>
                             <td>${d.date}</td>
-                            <td>${d.sickness}</td>
+                            <td>${status}</td>
                         </tr>`;
                 });
                 tableHtml += `</tbody></table>`;
                 donationsContainer.innerHTML = tableHtml;
             }
 
-            // 2. Render Requests Table
+            // 2. Render Requests Table (No change)
             const requestsContainer = document.getElementById('requests-table-container');
             if (allRequests.length === 0) {
                 requestsContainer.innerHTML = '<p id="no-requests-message" style="text-align: center; color: #777;">No requests have been submitted yet.</p>';
@@ -1239,9 +1356,9 @@
             
             if (!user) return;
 
-            // Filter donations by the current user
-            const userDonations = allDonations.filter(d => d.email === user.email);
-            const donationCount = userDonations.length;
+            // Filter donations by the current user and only count confirmed ones (confirmed !== false)
+            const userDonations = allDonations.filter(d => d.email === user.email && d.confirmed !== false);
+            const donationCount = userDonations.filter(d => d.confirmed === true).length; // Only count fully completed ones
 
             AWARDS.forEach(award => {
                 let isUnlocked = false;
@@ -1269,12 +1386,10 @@
         }
         
         function showAccount() {
-            // The account page already has the user info updated by startSession()
             showSection('account-page');
         }
         
         function showChangePassword() {
-            // Clear form on entry
             document.getElementById('changePasswordForm').reset();
             showSection('change-password-page');
         }
@@ -1309,19 +1424,17 @@
                 showMessage('password-feedback', "Success: Password changed successfully!");
                 btn.innerHTML = 'Change Password';
                 document.getElementById('changePasswordForm').reset();
-                // Optional: Send user back to account page
                 setTimeout(() => showSection('account-page'), 1000); 
             }, 500);
         }
         
-        // Placeholder for Export To Excel
         function exportToExcel() {
             alert("Export to Excel feature is a placeholder. You can copy the data from the tables above.");
         }
 
         // Resets all Local Storage data
         function resetData() {
-            if (confirm("Are you sure you want to clear ALL stored BLODO data (user, passwords, donations, requests, reviews)? This action cannot be undone.")) {
+            if (confirm("Are you sure you want to clear ALL stored BLODO data (user, passwords, donations, requests, reviews, pending appointments)? This action cannot be undone.")) {
                 localStorage.clear();
                 // Re-initialize global variables
                 user = null;
@@ -1330,6 +1443,7 @@
                 allRequests = [];
                 allReviews = [];
                 hasDonatedOrRequested = false;
+                unconfirmedDonation = null; // NEW
                 
                 alert("All data has been cleared. Reloading page to reset the environment.");
                 location.reload(); 
@@ -1341,6 +1455,14 @@
         // Home navigation logic
         function goToHome() {
             if (user) {
+                // 1. Check if an attendance confirmation is needed. This MUST run first.
+                if (checkForUnconfirmedAppointment()) {
+                    return; // Stop here and show confirmation page
+                }
+                
+                // 2. If no confirmation is needed, set the reminder for the upcoming appointment
+                setAppointmentReminder();
+
                 showSection('welcome-page');
             } else {
                 showSection('main-page');
@@ -1387,7 +1509,6 @@
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
 
-            // Simplified check: if password matches stored password, log in the stored user (or create a default one)
             if (password !== userPassword) {
                 showMessage('login-feedback', "Incorrect email or password.");
                 loginBtn.innerHTML = 'Login';
@@ -1399,7 +1520,6 @@
                 if (storedUser) {
                     user = storedUser;
                 } else {
-                    // Using email prefix as dynamic name if no user is found
                     const fallbackName = email.split('@')[0];
                     const dynamicName = fallbackName.charAt(0).toUpperCase() + fallbackName.slice(1);
                     user = { name: dynamicName, email: email };
@@ -1446,23 +1566,22 @@
                 // Keep data but clear session state
                 user = null;
                 isLoggedIn = false;
-                startSession(); // This will hide logged-in links and show the main page
+                // Clear page history on logout
+                pageHistory.length = 0;
+                startSession(); 
             }
         }
 
         // After successful login/signup, show the welcome page and update the sidebar
         function startSession() {
-            // Update the login status
             isLoggedIn = user !== null;
 
-            // Define all sidebar links that are managed
             const managedLinks = [
                 'logout-sidebar-link', 'donate-sidebar-link', 'request-sidebar-link', 
                 'reports-sidebar-link', 'account-sidebar-link', 'change-password-sidebar-link', 
                 'review-sidebar-link', 'awards-sidebar-link'
             ];
 
-            // Hide all managed links initially
             managedLinks.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) element.style.display = 'none';
@@ -1480,35 +1599,154 @@
                 document.getElementById('reports-sidebar-link').style.display = 'flex';
                 document.getElementById('account-sidebar-link').style.display = 'flex';
                 document.getElementById('change-password-sidebar-link').style.display = 'flex';
-                document.getElementById('awards-sidebar-link').style.display = 'flex'; // Show awards link
+                document.getElementById('awards-sidebar-link').style.display = 'flex';
 
                 
-                // 'Submit Review' link logic
                 const hasReviewed = allReviews.some(r => r.email === user.email && !r.isDummy);
                 const reviewLink = document.getElementById('review-sidebar-link');
 
                 if (hasDonatedOrRequested || hasReviewed) {
-                    // Show link if they can submit a new review OR edit an existing one
                     reviewLink.style.display = 'flex';
                 } else {
                     reviewLink.style.display = 'none';
                 }
 
+                // 1. Check for unconfirmed attendance immediately upon login/session start
+                if (checkForUnconfirmedAppointment()) {
+                    return; // Stop here and wait for user confirmation
+                }
+                
+                // 2. If all checks pass, show the home page with reminders
+                setAppointmentReminder();
                 showSection('welcome-page', false);
             } else {
                 showSection('main-page', false);
             }
         }
         
+        // --- NEW: APPOINTMENT MANAGEMENT LOGIC ---
+
+        // Checks if an appointment from yesterday or earlier needs confirmation
+        function checkForUnconfirmedAppointment() {
+            if (!unconfirmedDonation || unconfirmedDonation.email !== user.email) {
+                return false;
+            }
+
+            const todayDate = new Date(getTodayDateString()); // Midnight today
+            const appointmentDate = new Date(unconfirmedDonation.date);
+
+            // If appointment date is today or in the future, it's not time for the check yet.
+            if (appointmentDate >= todayDate) {
+                return false;
+            }
+
+            // If the date is past (yesterday or older), force the confirmation popup.
+            document.getElementById('unconfirmed-date-display').textContent = formatReadableDate(unconfirmedDonation.date);
+            document.getElementById('unconfirmed-hospital-display').textContent = unconfirmedDonation.hospital;
+            
+            showSection('confirm-attendance-page', false);
+            return true;
+        }
+
+        // Handles user response from the confirmation page
+        function confirmAttendance(attended) {
+            if (!unconfirmedDonation) {
+                goToHome();
+                return;
+            }
+            
+            const donationIndex = allDonations.findIndex(d => d.donationId === unconfirmedDonation.id);
+            
+            if (attended) {
+                // User attended, mark as confirmed and update badge counter
+                if (donationIndex !== -1) {
+                    allDonations[donationIndex].confirmed = true;
+                    alert(`Great job, ${user.name}! Your donation on ${formatReadableDate(unconfirmedDonation.date)} has been officially recorded as **COMPLETED**!`);
+                }
+                
+            } else {
+                // User missed it, remove the donation record completely
+                if (donationIndex !== -1) {
+                    // Remove the donation from allDonations
+                    allDonations.splice(donationIndex, 1);
+                    alert(`We understand! Your scheduled donation on ${formatReadableDate(unconfirmedDonation.date)} has been **REMOVED** from your records and badges.`);
+                }
+            }
+
+            // Clear the unconfirmed donation tracker regardless of outcome
+            unconfirmedDonation = null;
+            saveData();
+            
+            // Re-render awards and go home
+            startSession(); // Re-evaluates reminders and navigation
+        }
+        
+        // Clears the unconfirmed donation tracker and the associated appointment if it's upcoming
+        function clearUnconfirmedDonation() {
+            if (!unconfirmedDonation) return;
+
+            if (confirm(`Are you sure you want to clear your upcoming appointment for ${formatReadableDate(unconfirmedDonation.date)}? This will remove it from your records.`)) {
+                
+                const donationIndex = allDonations.findIndex(d => d.donationId === unconfirmedDonation.id);
+                
+                if (donationIndex !== -1) {
+                     // Remove the donation from allDonations
+                    allDonations.splice(donationIndex, 1);
+                }
+                
+                unconfirmedDonation = null;
+                saveData();
+                startSession(); // Refresh
+            }
+        }
+        
+        // Displays the reminder banner and card on the welcome page
+        function setAppointmentReminder() {
+            const reminderBanner = document.getElementById('appointment-reminder');
+            const upcomingCard = document.getElementById('upcoming-appointment-card');
+            
+            reminderBanner.style.display = 'none';
+            upcomingCard.style.display = 'none';
+
+            if (!unconfirmedDonation || unconfirmedDonation.email !== user.email) {
+                return;
+            }
+            
+            const appointmentDate = unconfirmedDonation.date;
+            const todayDate = getTodayDateString();
+            
+            // Show Reminder Banner if appointment is TODAY or in the FUTURE
+            if (new Date(appointmentDate) >= new Date(todayDate)) {
+                
+                let reminderText = `**REMINDER:** You have an appointment at **${unconfirmedDonation.hospital}** on **${formatReadableDate(appointmentDate)}**!`;
+                
+                if (appointmentDate === todayDate) {
+                    reminderText = `**TODAY'S APPOINTMENT:** Please remember to go to **${unconfirmedDonation.hospital}**!`;
+                }
+
+                document.getElementById('reminder-text').innerHTML = reminderText;
+                reminderBanner.style.display = 'flex';
+                
+                 // Show Upcoming Card if appointment is TODAY or in the FUTURE
+                 document.getElementById('upcoming-date').textContent = formatReadableDate(unconfirmedDonation.date);
+                 document.getElementById('upcoming-hospital').textContent = unconfirmedDonation.hospital;
+                 upcomingCard.style.display = 'block';
+            }
+        }
+        
+        // --- END: NEW APPOINTMENT MANAGEMENT LOGIC ---
+        
         // Donation Flow Functions
         function startDonation() {
-            if (user) {
-                donationData = { name: user.name, email: user.email };
-                showSection('age-page');
-            } else {
+            if (!user) {
                 alert("Please log in to start a donation.");
                 showSection('login-form');
+                return;
             }
+            
+            // Allow the user to proceed, which will overwrite the old appointment in confirmDonation()
+            donationData = { name: user.name, email: user.email };
+            showSection('age-page');
         }
 
         function saveAge() {
@@ -1555,12 +1793,12 @@
             showSection('date-page');
         }
         
-        // Helper to find the date of the last whole blood donation for the current user
+        // Helper to find the date of the last WHOLE BLOOD DONATION for the current user
         function findLastDonationDate() {
             if (!user) return null;
             
-            // Filter donations by the current user's email
-            const userDonations = allDonations.filter(d => d.email === user.email);
+            // Filter donations by the current user's email AND only confirmed ones
+            const userDonations = allDonations.filter(d => d.email === user.email && d.confirmed === true);
             
             if (userDonations.length === 0) return null;
             
@@ -1599,7 +1837,7 @@
                     const formatDate = (d) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                     
                     document.getElementById('lastDonationDateDisplay').textContent = formatDate(lastDonationDate);
-                    document.getElementById('selectedDonationDateDisplay').textContent = formatDate(selectedDate);
+                    document.getElementById('selectedDonationDateDisplay').textContent = formatReadableDate(date);
                     document.getElementById('nextRecommendedDateDisplay').textContent = formatDate(requiredNextDate);
 
                     showSection('donation-warning-page');
@@ -1632,16 +1870,45 @@
             document.getElementById('reviewBloodType').textContent = donationData.bloodType;
             document.getElementById('reviewCity').textContent = donationData.city;
             document.getElementById('reviewHospital').textContent = donationData.hospital;
-            document.getElementById('reviewDate').textContent = donationData.date;
+            document.getElementById('reviewDate').textContent = formatReadableDate(donationData.date);
             document.getElementById('reviewSickness').textContent = donationData.sickness;
             showSection('review-page');
         }
 
-        // Confirms donation and saves to Local Storage
+        // Confirms donation and saves to ALL DONATIONS (NEW BEHAVIOR)
         function confirmDonation() {
-            allDonations.push(donationData);
             
-            // Flag that the user has completed an interaction
+            // 1. Assign a unique ID and set confirmation state to PENDING (undefined)
+            const donationId = Date.now(); 
+            const newDonation = { 
+                ...donationData, 
+                donationId: donationId, 
+                // confirmed is undefined by default, meaning scheduled but status TBD
+            };
+
+            // 2. Clear any existing unconfirmed/upcoming appointment
+            if (unconfirmedDonation && unconfirmedDonation.email === user.email) {
+                // If there was an old upcoming appointment, remove it before adding the new one
+                const oldDonationIndex = allDonations.findIndex(d => d.donationId === unconfirmedDonation.id);
+                if (oldDonationIndex !== -1) {
+                    allDonations.splice(oldDonationIndex, 1);
+                }
+            }
+
+            // 3. Add the new scheduled donation to allDonations (appears immediately in reports)
+            allDonations.push(newDonation);
+            
+            // 4. Update the tracker for the 10 PM check
+            unconfirmedDonation = { 
+                id: donationId, 
+                date: newDonation.date, 
+                hospital: newDonation.hospital, 
+                email: newDonation.email 
+            };
+            
+            document.getElementById('confirmed-date').textContent = formatReadableDate(newDonation.date);
+            
+            // Flag that the user has scheduled an interaction
             hasDonatedOrRequested = true;
             saveData();
             
@@ -1651,7 +1918,7 @@
             showSection('thank-you-page');
         }
         
-        // Request Blood Flow
+        // Request Blood Flow (No change)
         function startRequest() {
             if (user) {
                 showSection('request-blood-page');
@@ -1661,7 +1928,7 @@
             }
         }
 
-        // Submits request and saves to Local Storage
+        // Submits request and saves to Local Storage (No change)
         function submitRequest() {
             const bloodType = document.getElementById('requestBloodType').value;
             const city = document.getElementById('requestCity').value;
@@ -1695,7 +1962,7 @@
             showSection('request-thank-you-page');
         }
         
-        // --- REVIEW FUNCTIONS ---
+        // --- REVIEW FUNCTIONS (No change in core logic) ---
         
         // NEW FUNCTION: Initiates the review editing process
         function startReviewEdit(reviewIndex) {
