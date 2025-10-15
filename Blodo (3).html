@@ -1055,7 +1055,7 @@
                 "Reliable and trustworthy. It's great to see technology used for such a good cause in our region.",
                 "Truly an indispensable resource for managing blood requests and helping those who need it most.",
                 "So grateful for this platform. I wish I had known about it sooner. It's a lifesaver!",
-                "Used it to find blood for my uncle; the match was incredibly fast. Thank you, BLODO.",
+                "Used it to find blood for my uncle; the match was incredibly fast. Thank Thank you, BLODO.",
                 "A five-star experience from browsing to final confirmation. Professional and caring.",
                 "Simple, modern, and effective. This is exactly what the public needs for donation.",
                 "Definitely recommend BLODO to friends and family. A great example of tech for good."
@@ -1157,7 +1157,187 @@
             }
             document.getElementById(sectionId).style.display = 'block';
         }
+        
+        // --- NEW/FIXED SIDEBAR NAVIGATION FUNCTIONS ---
+        
+        function showReportsPage() {
+            // 1. Render Donations Table
+            const donationsContainer = document.getElementById('donations-table-container');
+            if (allDonations.length === 0) {
+                donationsContainer.innerHTML = '<p id="no-donations-message" style="text-align: center; color: #777;">No donations have been submitted yet.</p>';
+            } else {
+                let tableHtml = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Blood Type</th>
+                                <th>City</th>
+                                <th>Hospital</th>
+                                <th>Date</th>
+                                <th>Sicknesses</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                allDonations.forEach(d => {
+                    tableHtml += `
+                        <tr>
+                            <td>${d.name}</td>
+                            <td>${d.email}</td>
+                            <td>${d.bloodType}</td>
+                            <td>${d.city}</td>
+                            <td>${d.hospital}</td>
+                            <td>${d.date}</td>
+                            <td>${d.sickness}</td>
+                        </tr>`;
+                });
+                tableHtml += `</tbody></table>`;
+                donationsContainer.innerHTML = tableHtml;
+            }
 
+            // 2. Render Requests Table
+            const requestsContainer = document.getElementById('requests-table-container');
+            if (allRequests.length === 0) {
+                requestsContainer.innerHTML = '<p id="no-requests-message" style="text-align: center; color: #777;">No requests have been submitted yet.</p>';
+            } else {
+                let tableHtml = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Blood Type</th>
+                                <th>City</th>
+                                <th>Date Needed</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                allRequests.forEach(r => {
+                    tableHtml += `
+                        <tr>
+                            <td>${r.name}</td>
+                            <td>${r.email}</td>
+                            <td>${r.bloodType}</td>
+                            <td>${r.city}</td>
+                            <td>${r.date}</td>
+                            <td>${r.reason}</td>
+                        </tr>`;
+                });
+                tableHtml += `</tbody></table>`;
+                requestsContainer.innerHTML = tableHtml;
+            }
+
+            // 3. Show the page
+            showSection('reports-page');
+        }
+        
+        function renderAwards() {
+            const grid = document.getElementById('awards-grid');
+            grid.innerHTML = '';
+            
+            if (!user) return;
+
+            // Filter donations by the current user
+            const userDonations = allDonations.filter(d => d.email === user.email);
+            const donationCount = userDonations.length;
+
+            AWARDS.forEach(award => {
+                let isUnlocked = false;
+
+                if (award.customCheck) {
+                    isUnlocked = award.customCheck(userDonations);
+                } else {
+                    isUnlocked = donationCount >= award.requiredDonations;
+                }
+
+                const card = document.createElement('div');
+                card.className = `badge-card ${isUnlocked ? 'unlocked' : ''}`;
+                card.innerHTML = `
+                    <i class="${award.icon} badge-icon"></i>
+                    <p class="badge-name">${award.name}</p>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">${award.description}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        function showAwardsBadges() {
+            renderAwards();
+            showSection('awards-badges-page');
+        }
+        
+        function showAccount() {
+            // The account page already has the user info updated by startSession()
+            showSection('account-page');
+        }
+        
+        function showChangePassword() {
+            // Clear form on entry
+            document.getElementById('changePasswordForm').reset();
+            showSection('change-password-page');
+        }
+        
+        function changePassword(event) {
+            event.preventDefault();
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            const btn = document.getElementById('change-password-btn');
+
+            if (currentPassword !== userPassword) {
+                showMessage('password-feedback', "Error: Current password is incorrect.");
+                return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                showMessage('password-feedback', "Error: New passwords do not match.");
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showMessage('password-feedback', "Error: Password must be at least 6 characters long.");
+                return;
+            }
+
+            btn.innerHTML = '<i class="fas fa-spinner loading-icon"></i> Updating...';
+
+            setTimeout(() => {
+                userPassword = newPassword;
+                saveData();
+                showMessage('password-feedback', "Success: Password changed successfully!");
+                btn.innerHTML = 'Change Password';
+                document.getElementById('changePasswordForm').reset();
+                // Optional: Send user back to account page
+                setTimeout(() => showSection('account-page'), 1000); 
+            }, 500);
+        }
+        
+        // Placeholder for Export To Excel
+        function exportToExcel() {
+            alert("Export to Excel feature is a placeholder. You can copy the data from the tables above.");
+        }
+
+        // Resets all Local Storage data
+        function resetData() {
+            if (confirm("Are you sure you want to clear ALL stored BLODO data (user, passwords, donations, requests, reviews)? This action cannot be undone.")) {
+                localStorage.clear();
+                // Re-initialize global variables
+                user = null;
+                userPassword = "password123";
+                allDonations = [];
+                allRequests = [];
+                allReviews = [];
+                hasDonatedOrRequested = false;
+                
+                alert("All data has been cleared. Reloading page to reset the environment.");
+                location.reload(); 
+            }
+        }
+        
+        // --- END: NEW/FIXED SIDEBAR NAVIGATION FUNCTIONS ---
+        
         // Home navigation logic
         function goToHome() {
             if (user) {
@@ -1231,6 +1411,14 @@
                 loginBtn.innerHTML = 'Login';
             }, 500);
         }
+        
+        function showLogin() {
+             showSection('login-form');
+        }
+        
+        function showSignup() {
+             showSection('signup-form');
+        }
 
         // Handles the persistent sign-up process
         function signUp(event) {
@@ -1251,6 +1439,15 @@
                 startSession();
                 signupBtn.innerHTML = 'Sign Up';
             }, 500);
+        }
+        
+        function logout() {
+            if (confirm("Are you sure you want to log out?")) {
+                // Keep data but clear session state
+                user = null;
+                isLoggedIn = false;
+                startSession(); // This will hide logged-in links and show the main page
+            }
         }
 
         // After successful login/signup, show the welcome page and update the sidebar
@@ -1297,9 +1494,9 @@
                     reviewLink.style.display = 'none';
                 }
 
-                showSection('welcome-page');
+                showSection('welcome-page', false);
             } else {
-                showSection('main-page');
+                showSection('main-page', false);
             }
         }
         
@@ -1635,6 +1832,13 @@
 
             // Sort non-dummy reviews first, then dummy ones, and newest user review first
             const sortedReviews = allReviews.sort((a, b) => {
+                // Check if both are the current user's review (for stable sort among real reviews)
+                const isAUser = user && a.email === user.email && !a.isDummy;
+                const isBUser = user && b.email === user.email && !b.isDummy;
+                
+                if (isAUser && !isBUser) return -1; // Current user's review comes first
+                if (!isAUser && isBUser) return 1;
+
                 if (a.isDummy === b.isDummy) {
                     // Sort non-dummy reviews by date descending (newest first)
                     if (!a.isDummy) {
