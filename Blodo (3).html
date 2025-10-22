@@ -84,6 +84,75 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             animation: slideUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
+        
+        /* NEW: Profile Picture Styles */
+        .profile-pic-container {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #dc3545;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* NEW: Chatbot Styles */
+        .bot-message, .user-message {
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            max-width: 85%;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+        }
+        .bot-message {
+            background-color: #e9ecef; /* Light gray */
+            color: #333;
+            margin-right: auto;
+            border-top-left-radius: 0;
+        }
+        .user-message {
+            background-color: #dc3545; /* Red */
+            color: #fff;
+            margin-left: auto;
+            border-top-right-radius: 0;
+            text-align: right;
+        }
+        .chatbot-page #chat-window {
+            height: 50vh; /* Make the chat window taller */
+            max-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* NEW: Floating Chatbot Button */
+        #chatbot-float-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #007bff; /* Blue color */
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 2rem;
+            z-index: 1002; /* Higher than sidebar toggle */
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5);
+            transition: transform 0.3s ease-in-out, background-color 0.3s;
+        }
+        
+        #chatbot-float-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1) translateY(-3px);
+        }
+
 
         .main-page-container {
             text-align: center;
@@ -205,6 +274,139 @@
             transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(220, 53, 69, 0.5);
         }
+        
+        /* Override for the blue chatbot button hover */
+        #chatbot-float-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1) translateY(-3px);
+        }
+
+        .welcome-page {
+            text-align: center;
+        }
+
+        .main-page-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-page-content h2 {
+            font-size: 2.5rem;
+            color: #dc3545;
+            margin-bottom: 0.5rem;
+        }
+
+        .main-page-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .main-page-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.4s, box-shadow 0.4s;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+            outline: none;
+        }
+        
+        /* PASSWORD VISIBILITY STYLES */
+        .password-container {
+            position: relative;
+        }
+        .password-container input {
+            padding-right: 40px !important; /* Make space for the icon */
+        }
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #999;
+            font-size: 1rem;
+            transition: color 0.2s;
+            z-index: 10;
+        }
+        .toggle-password:hover {
+            color: #dc3545;
+        }
+
+        button {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dual-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .dual-buttons button {
+            width: 50%;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #c82333;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(220, 53, 69, 0.5);
+        }
+        
+        /* Override for the blue chatbot button hover */
+        #chatbot-float-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1) translateY(-3px);
+        }
 
         .welcome-page {
             text-align: center;
@@ -277,11 +479,21 @@
 
         .feedback-message {
             text-align: center;
-            color: #dc3545;
+            /* Default to error color, but will be set by JS */
+            color: #dc3545; 
             margin-bottom: 1rem;
             font-weight: bold;
-            opacity: 0;
-            animation: fadeInOut 3s forwards;
+            /* Start invisible to allow the fadeInOut animation to work */
+            opacity: 0; 
+            min-height: 1.5rem; /* Reserve space to prevent layout shift */
+        }
+        
+        /* The animation should only be applied by JS on success/failure */
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
         }
 
         .input-group-animation {
@@ -382,12 +594,6 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-        }
-
         .loading-icon {
             animation: spin 1s linear infinite;
         }
@@ -473,6 +679,10 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+        }
+        /* Make sure logged-in LI items are still displayed as flex when shown */
+        .sidebar li[style*="display: flex"] {
+            display: flex !important;
         }
         .sidebar li i {
             font-size: 1.2rem;
@@ -583,19 +793,23 @@
         <i class="fas fa-home"></i>
     </button>
     
+    <button id="chatbot-float-btn" onclick="showSection('chatbot-page')">
+        <i class="fas fa-question"></i>
+    </button>
+    
     <aside class="sidebar" id="sidebar">
         <ul>
             <li onclick="toggleSidebar(); goToHome()"><i class="fas fa-home"></i> Home</li> 
             <li onclick="toggleSidebar(); startDonation()" id="donate-sidebar-link" style="display:none;"><i class="fas fa-hand-holding-heart"></i> Donate Blood</li>
             <li onclick="toggleSidebar(); startRequest()" id="request-sidebar-link" style="display:none;"><i class="fas fa-hand-holding-medical"></i> Request Blood</li>
-            <li onclick="toggleSidebar(); renderDonationCenters()" id="centers-sidebar-link" style="display:none;"><i class="fas fa-map-marker-alt"></i> Find Donation Centers</li>
+            <li onclick="toggleSidebar(); renderDonationCenters()" id="centers-sidebar-link"><i class="fas fa-map-marker-alt"></i> Find Donation Centers</li>
             <li onclick="toggleSidebar(); showReportsPage()" id="reports-sidebar-link" style="display:none;"><i class="fas fa-chart-bar"></i> View Reports</li>
             <li onclick="toggleSidebar(); showAwardsBadges()" id="awards-sidebar-link" style="display:none;"><i class="fas fa-trophy"></i> Awards & Badges</li>
             <li onclick="toggleSidebar(); showAccount()" id="account-sidebar-link" style="display:none;"><i class="fas fa-user-circle"></i> Account</li>
             <li onclick="toggleSidebar(); showChangePassword()" id="change-password-sidebar-link" style="display:none;"><i class="fas fa-key"></i> Change Password</li>
             <li onclick="toggleSidebar(); showReviewsHistoryPage()"><i class="fas fa-comments" id="reviews-history-sidebar-link"></i> View Reviews</li>
             <li onclick="toggleSidebar(); showReviewForm()" id="review-sidebar-link" style="display:none;"><i class="fas fa-star"></i> Submit Review</li>
-            <li onclick="toggleSidebar(); showSection('help-page')"><i class="fas fa-question-circle"></i> Help</li>
+            <li onclick="toggleSidebar(); showSection('chatbot-page'); pageHistory.length = 0;"><i class="fas fa-question-circle"></i> Help</li>
             <li onclick="toggleSidebar(); logout()" id="logout-sidebar-link" style="display:none;"><i class="fas fa-sign-out-alt"></i> Log Out</li>
         </ul>
     </aside>
@@ -700,7 +914,19 @@
     <main id="account-page">
         <div class="container">
             <h2>Your Account</h2>
-            <p><strong>Name:</strong> <span id="accountName"></span></p>
+            
+            <div class="profile-pic-container">
+                <img id="profile-picture-display" src="https://via.placeholder.com/100/dc3545/ffffff?text=U" alt="Profile Picture" class="profile-pic">
+                <input type="file" id="profile-picture-input" accept="image/*" style="display: none;" onchange="handleProfilePictureChange(event)">
+                <button onclick="document.getElementById('profile-picture-input').click()" style="width: 100%; background-color: #007bff; margin-top: 1rem; border-radius: 8px; box-shadow: none; transform: none; padding: 0.75rem 1rem;">
+                    <i class="fas fa-upload"></i> Choose Picture
+                </button>
+                <button onclick="removeProfilePicture()" style="width: 100%; background-color: #f44336; margin-top: 0.5rem; border-radius: 8px; box-shadow: none; transform: none; padding: 0.75rem 1rem;" id="remove-profile-pic-btn">
+                    <i class="fas fa-trash"></i> Remove Picture
+                </button>
+            </div>
+            
+            <p style="margin-top: 2rem;"><strong>Name:</strong> <span id="accountName"></span></p>
             <p><strong>Email:</strong> <span id="accountEmail"></span></p>
             <div class="dual-buttons">
                 <button onclick="goBack()">Go Back</button>
@@ -831,6 +1057,22 @@
         </div>
     </main>
 
+    <main id="chatbot-page" class="chatbot-page">
+        <div class="container">
+            <h2>Advanced BLODO Chatbot <i class="fas fa-robot"></i></h2>
+            <div id="chat-window" style="height: 400px; overflow-y: auto; border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin-bottom: 1rem; background-color: #f8f9fa;">
+                <p class="bot-message">Hello! I'm your **Advanced BLODO Chatbot**. I can answer questions about blood donation, hospitals, and your account statistics. How can I help you today? Try asking about **your stats** or **hospital supply**.</p>
+            </div>
+            <div id="chat-input-container" style="display: flex; gap: 10px;">
+                <input type="text" id="chat-input" placeholder="Ask me anything..." style="flex-grow: 1;">
+                <button onclick="sendMessage()" style="padding: 0.75rem 1rem; border-radius: 8px;">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <button onclick="goBack()" style="width: 100%; margin-top: 1rem;">Go Back</button>
+        </div>
+    </main>
+
     <main id="reports-page">
         <div class="container">
             <h2>Donations and Requests Report</h2>
@@ -885,7 +1127,7 @@
                     <label><input type="radio" name="bloodType" value="O-"> O-</label>
                 </div>
                 <div class="dual-buttons">
-                    <button onclick="goBack()">Go Back</button>
+                    <button onclick="goToPreviousFlowStep()">Go Back</button>
                     <button onclick="saveBloodType()">Next</button>
                 </div>
             </div>
@@ -907,7 +1149,7 @@
                     <input type="text" id="otherCity" placeholder="Enter city if 'Other' is selected">
                 </div>
                 <div class="dual-buttons">
-                    <button onclick="goBack()">Go Back</button>
+                    <button onclick="goToPreviousFlowStep()">Go Back</button>
                     <button onclick="saveCity()">Next</button>
                 </div>
             </div>
@@ -925,7 +1167,7 @@
                     <input type="text" id="otherHospital" placeholder="Enter hospital if 'Other' is selected">
                 </div>
                 <div class="dual-buttons">
-                    <button onclick="goBack()">Go Back</button>
+                    <button onclick="goToPreviousFlowStep()">Go Back</button>
                     <button onclick="saveHospital()">Next</button>
                 </div>
             </div>
@@ -938,7 +1180,7 @@
                 <h2>What is the date you want to donate?</h2>
                 <input type="date" id="donationDate" required>
                 <div class="dual-buttons">
-                    <button onclick="goBack()">Go Back</button>
+                    <button onclick="goToPreviousFlowStep()">Go Back</button>
                     <button onclick="saveDate()">Next</button>
                 </div>
             </div>
@@ -954,7 +1196,7 @@
                 <p>The date you selected, <strong id="selectedDonationDateDisplay"></strong>, is less than 56 days after your last donation.</p>
                 <p><strong>Are you sure you want to proceed?</strong> Skipping this warning may make you ineligible at the donation center.</p>
                 <div class="dual-buttons">
-                    <button onclick="goBack()">Go Back & Change Date</button>
+                    <button onclick="goToPreviousFlowStep()">Go Back & Change Date</button>
                     <button onclick="skipWarning()" style="background-color: #ffc107; color: #333; box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);">Skip Warning & Proceed</button>
                 </div>
             </div>
@@ -968,7 +1210,7 @@
                     <textarea id="sickness" rows="4" placeholder="Enter any sicknesses or 'None'" required></textarea>
                 </div>
                 <div class="dual-buttons">
-                    <button onclick="goBack()">Go Back</button>
+                    <button onclick="goToPreviousFlowStep()">Go Back</button>
                     <button onclick="saveSickness()">Next</button>
                 </div>
             </div>
@@ -985,7 +1227,7 @@
             <p><strong>Donation Date:</strong> <span id="reviewDate"></span></p>
             <p><strong>Sicknesses:</strong> <span id="reviewSickness"></span></p>
             <div class="dual-buttons">
-                <button onclick="goBack()">Go Back</button>
+                <button onclick="goToPreviousFlowStep()">Go Back</button>
                 <button onclick="confirmDonation()">Confirm Appointment</button>
             </div>
         </div>
@@ -1040,8 +1282,14 @@
         <div class="container">
             <h2>Local Donation Centers and Supply Needs</h2>
             <p>Below is a list of known donation centers and their current estimated blood supply needs. **The list and needs update daily.** Contact the center directly to confirm your appointment.</p>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <input type="text" id="center-search-input" placeholder="Search by name, city, or need level..." onkeyup="filterCenters()">
+            </div>
+            
             <div id="centers-list">
-                </div>
+            </div>
+            
             <button onclick="goBack()" style="width: 100%; margin-top: 2rem;">Go Back</button>
         </div>
     </main>
@@ -1100,9 +1348,8 @@
         let unconfirmedDonation = JSON.parse(localStorage.getItem('unconfirmedDonation')) || null;
         let isLoggedIn = user !== null;
         let allReviews = JSON.parse(localStorage.getItem('allReviews')) || [];
-
-        // --- Daily Randomization Logic ---
         
+        // --- Daily Randomization Logic ---
         // Comprehensive list of all possible donation centers
         const ALL_HOSPITALS_DATA = [
             { name: 'Farid Habib Hospital', city: 'Giza', contact: '02-1234-5678', address: '15 El-Gomhoria St, Dokki' },
@@ -1120,10 +1367,10 @@
         // A simple seedable PRNG function (Mulberry32) to ensure daily consistency
         function mulberry32(a) {
             return function() {
-              var t = a += 0x6d2b79f5;
-              t = Math.imul(t ^ t >>> 15, t | 1);
-              t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-              return ((t ^ t >>> 14) >>> 0) / 4294967296;
+                var t = a += 0x6d2b79f5;
+                t = Math.imul(t ^ t >>> 15, t | 1);
+                t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
             }
         }
 
@@ -1136,7 +1383,7 @@
 
             // 1. Shuffle and select a subset (e.g., 6 hospitals each day)
             const shuffledHospitals = [...ALL_HOSPITALS_DATA].sort(() => random() - 0.5);
-            const dailyHospitals = shuffledHospitals.slice(0, 6); 
+            const dailyHospitals = shuffledHospitals.slice(0, 6);
 
             // 2. Assign random but consistent need levels for the day
             const needLevels = ['Critical', 'Urgent', 'Good Supply'];
@@ -1144,17 +1391,13 @@
             return dailyHospitals.map(hospital => {
                 const needIndex = Math.floor(random() * needLevels.length);
                 const need_level = needLevels[needIndex];
-
-                return {
-                    ...hospital,
-                    need_level: need_level
-                };
+                return { ...hospital, need_level: need_level };
             });
         }
-        
+
         // Initialize the daily hospital list once at script start
         let HOSPITAL_LOCATIONS = generateDailyHospitalData();
-
+        
         // --- Awards Data (unchanged) ---
         const AWARDS = [
             { id: 'first-timer', name: 'First Timer', description: 'Complete your first donation.', icon: 'fas fa-medal', requiredDonations: 1 },
@@ -1163,1216 +1406,1193 @@
             { id: 'marathon-donor', name: 'Marathon Donor', description: 'Complete 10 total donations.', icon: 'fas fa-running', requiredDonations: 10 },
             { id: 'universal-donor', name: 'Universal Donor', description: 'Be a universally required O- blood type.', icon: 'fas fa-globe', requiredDonations: 0, isBloodType: true },
             { id: 'local-hero', name: 'Local Hero', description: 'Complete 3 donations in your registered city.', icon: 'fas fa-city', requiredDonations: 3, isLocal: true },
-            { id: 'initial-hero-gift', name: 'Initial Hero Gift', description: 'Complete the first three donations and get a discount!', icon: 'fas fa-gift', requiredDonations: 3, isInitial: true },
-            { id: 'annual-champion', name: 'Annual Champion', description: 'Complete 6 donations in one year.', icon: 'fas fa-calendar-check', requiredDonations: 6, isAnnual: true }
+            { id: 'initial-hero-gift', name: 'Initial Hero Gift', description: 'Complete the first three donations and get a discount!', icon: 'fas fa-gift', requiredDonations: 3 },
         ];
 
-        // --- Massive Social Proof Injection (160 UNIQUE Reviews) (unchanged, truncated for brevity) ---
-        const NUM_DUMMY_REVIEWS = 160; 
-        if (allReviews.filter(r => r.isDummy).length < NUM_DUMMY_REVIEWS) {
-            const names = ["Alex K.", "Dana S.", "Chris B.", "Jordan W.", "Taylor R.", "Sam M.", "Robin L.", "Casey J.", "Jamie T.", "Riley A.", "Morgan C.", "Avery E.", "Skylar F.", "Quinn G.", "Peyton H.", "Jesse I.", "Drew N.", "Kai Z.", "Reese X.", "Rowan V.", "Liam G.", "Noah P.", "Oliver J.", "Elijah S.", "William A.", "James B.", "Benjamin C.", "Lucas D.", "Henry F.", "Alexander H.", "Mia T.", "Charlotte V.", "Amelia W.", "Evelyn X.", "Harper Y.", "Sofia Z.", "Abigail A.", "Emily B.", "Elizabeth C.", "Mila D."];
-            const baseComments = [ 
-                "The process was absolutely seamless. I was in and out quickly and felt like I made a real difference.", 
-                "Highly efficient platform for finding donation centers. I appreciate the clear instructions and organization.", 
-                "Making a donation appointment was so easy with this app. The user experience is fantastic!", 
-                "A vital service for the community. I encourage everyone to use BLODO for their next blood donation.", 
-                "The scheduling feature is a game-changer. It removes all the unnecessary hassle and paperwork.", 
-                "I am very impressed with the dedication of the team behind this platform and their commitment to health.", 
-                "This application makes giving back simpler than ever before. It's a true community helper.", 
-                "Quick registration and very helpful during a time of urgent need for my family.", 
-                "Excellent way to connect hospitals with willing donors. Five stars for effectiveness!", 
-                "I felt motivated to donate because the platform made it so accessible and easy to understand.", 
-                "A well-designed and necessary tool. Keep helping people save lives!", 
-                "Found a nearby hospital immediately. The location filtering feature is spot on and accurate.", 
-                "I had a fantastic experience. The follow-up information and thank you note were very useful.", 
-                "Reliable and trustworthy. It's great to see technology used for such a good cause in our region.", 
-                "Truly an indispensable resource for managing blood requests and helping those who need it most.", 
-                "So grateful for this platform. I wish I had known about it sooner. It's a lifesaver!", 
-                "Used it to find blood for my uncle; the match was incredibly fast. Thank Thank you, BLODO.", 
-                "A five-star experience from browsing to final confirmation. Professional and caring.", 
-                "Simple, modern, and effective. This is exactly what the public needs for donation.", 
-                "Definitely recommend BLODO to friends and family. A great example of tech for good." 
-            ];
-            const adjectives = ["incredibly easy", "surprisingly smooth", "remarkably fast", "totally reliable", "very user-friendly", "highly commendable", "extremely straightforward", "perfectly designed", "absolutely essential", "painless and quick", "a massive relief", "exceptionally well-done"];
-            const subjects = ["the scheduling tool", "the hospital search", "the quick match function", "the clear guidance", "the overall process", "the immediate confirmation", "the simple interface", "the clear mission"];
-            const closings = [". Will definitely use again.", ". Keep up the great work!", ". Truly a lifesaver.", ". Highly recommended.", ". Fantastic service.", ". So happy I found this app.", ". A huge positive difference.", ". Great example of tech for good."];
 
-            const generateDate = (index) => {
-                const day = (index % 30) + 1;
-                const month = ((index % 12) + 1) % 12 + 1;
-                const year = (month > 6) ? 2024 : 2025;
-                return `${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
-            };
-
-            const newReviews = [];
-            const existingEmails = new Set(allReviews.map(r => r.email));
-
-            for (let i = 0; i < NUM_DUMMY_REVIEWS; i++) {
-                const baseName = names[i % names.length];
-                const uniqueNum = (i + 1) * 13 + (Math.floor(Math.random() * 99) + 1);
-                const reviewerName = baseName.split(' ')[0] + ' ' + (baseName.split(' ')[1] || 'L.') + uniqueNum.toString().slice(-3);
-                let email = `${reviewerName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}@dummy.com`;
-                
-                const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-                const subject = subjects[Math.floor(Math.random() * subjects.length)];
-                const closing = closings[Math.floor(Math.random() * closings.length)];
-                let comment;
-                if (i < baseComments.length) {
-                    comment = baseComments[i];
-                } else {
-                    comment = `The ${subject} is ${adjective}${closing}`;
-                }
-                
-                const stickers = ["❤️", "👍", "🌟", "😊", "🩸"];
-                if (Math.random() < 0.3) {
-                    comment = stickers[Math.floor(Math.random() * stickers.length)] + " " + comment;
-                }
-
-                let rating;
-                const r = Math.random();
-                if (r < 0.6) {
-                    rating = 5;
-                } else if (r < 0.9) {
-                    rating = 4;
-                } else if (r < 0.95) {
-                    rating = 3;
-                } else {
-                    rating = Math.floor(Math.random() * 2) + 1;
-                }
-
-                if (!existingEmails.has(email)) {
-                    newReviews.push({
-                        id: Date.now() + i,
-                        email: email,
-                        name: reviewerName,
-                        rating: rating,
-                        comment: comment,
-                        date: generateDate(i),
-                        isDummy: true
-                    });
-                    existingEmails.add(email);
-                }
-            }
-
-            allReviews = newReviews.concat(allReviews);
-            localStorage.setItem('allReviews', JSON.stringify(allReviews));
-        }
-
-        // --- Core Functions ---
-
-        /**
-         * Checks the current year and resets annual donation counts if a new year has started.
-         * This function should be called at login and upon confirming a donation.
-         */
-        function checkAndResetAnnualBadges() {
-            if (!user) return;
-
-            const currentYear = new Date().getFullYear();
-
-            // Initialize or reset if the year has changed
-            if (user.last_reset_year === undefined || user.last_reset_year < currentYear) {
-                user.annual_donations_count = 0;
-                user.last_reset_year = currentYear;
-                saveUser();
-                console.log(`Annual donation count reset for ${currentYear}.`);
-            }
-        }
-
-
-        function startSession() {
-            // Get all sections and hide them
-            document.querySelectorAll('main').forEach(section => {
-                section.style.display = 'none';
-            });
-
-            // Handle user session
-            if (isLoggedIn) {
-                // Run the annual badge check at session start
-                checkAndResetAnnualBadges();
-                
-                document.getElementById('welcomeName').textContent = user.name.split(' ')[0];
-                document.getElementById('donate-sidebar-link').style.display = 'flex';
-                document.getElementById('request-sidebar-link').style.display = 'flex';
-                document.getElementById('reports-sidebar-link').style.display = 'flex';
-                document.getElementById('awards-sidebar-link').style.display = 'flex';
-                document.getElementById('account-sidebar-link').style.display = 'flex';
-                document.getElementById('change-password-sidebar-link').style.display = 'flex';
-                document.getElementById('logout-sidebar-link').style.display = 'flex';
-                document.getElementById('review-sidebar-link').style.display = 'flex';
-                document.getElementById('centers-sidebar-link').style.display = 'flex'; // NEW: Show centers link
-
-                // Check for unconfirmed donation upon login
-                if (unconfirmedDonation && new Date(unconfirmedDonation.date) < new Date()) {
-                    // Appointment is in the past and unconfirmed
-                    document.getElementById('unconfirmed-date-display').textContent = unconfirmedDonation.date;
-                    document.getElementById('unconfirmed-hospital-display').textContent = unconfirmedDonation.hospital;
-                    showSection('confirm-attendance-page');
-                } else if (unconfirmedDonation) {
-                    // Upcoming appointment
-                    document.getElementById('upcoming-date').textContent = unconfirmedDonation.date;
-                    document.getElementById('upcoming-hospital').textContent = unconfirmedDonation.hospital;
-                    document.getElementById('upcoming-appointment-card').style.display = 'block';
-                    
-                    // Show reminder banner
-                    document.getElementById('reminder-text').textContent = `Reminder: Your appointment is on ${unconfirmedDonation.date} at ${unconfirmedDonation.hospital}.`;
-                    document.getElementById('appointment-reminder').style.display = 'flex';
-
-                    showSection('welcome-page');
-                } else {
-                    // No unconfirmed/upcoming donation
-                    document.getElementById('upcoming-appointment-card').style.display = 'none';
-                    document.getElementById('appointment-reminder').style.display = 'none';
-                    showSection('welcome-page');
-                }
-
-            } else {
-                // Logged out state
-                document.getElementById('donate-sidebar-link').style.display = 'none';
-                document.getElementById('request-sidebar-link').style.display = 'none';
-                document.getElementById('reports-sidebar-link').style.display = 'none';
-                document.getElementById('awards-sidebar-link').style.display = 'none';
-                document.getElementById('account-sidebar-link').style.display = 'none';
-                document.getElementById('change-password-sidebar-link').style.display = 'none';
-                document.getElementById('logout-sidebar-link').style.display = 'none';
-                document.getElementById('review-sidebar-link').style.display = 'none';
-                document.getElementById('centers-sidebar-link').style.display = 'none'; // NEW: Hide centers link
-
-                showSection('main-page');
-            }
-        }
-
-        function showSection(id) {
-            // Push current page to history if it's not the same as the last one
-            const currentSection = document.querySelector('main:not([style*="display: none"])');
-            if (currentSection && currentSection.id !== id) {
-                // Do not push thank you pages to history
-                if (!currentSection.id.includes('-thank-you-') && currentSection.id !== 'confirm-attendance-page') {
-                     pageHistory.push(currentSection.id);
-                }
-            }
-
-            document.querySelectorAll('main').forEach(section => {
-                section.style.display = 'none';
-            });
-            document.getElementById(id).style.display = 'block';
-
-            // Special logic for specific pages
-            if (id === 'account-page' && user) {
-                document.getElementById('accountName').textContent = user.name;
-                document.getElementById('accountEmail').textContent = user.email;
-            } else if (id === 'reviews-history-page') {
-                renderReviewsHistory();
-            } else if (id === 'awards-badges-page') {
-                renderAwardsBadges();
-            } else if (id === 'reports-page') {
-                renderReports();
-            } else if (id === 'hospital-page') {
-                // IMPORTANT: Populate the list of daily hospitals when the page is shown
-                populateHospitalSelect();
-            }
-        }
+        // --- Helper Functions ---
         
-        // This function handles going back one page in history
-        function goBack() {
-            // Special handling for the donation process to ensure clean exit
-            if (document.querySelector('#donation-warning-page').style.display === 'block') {
-                // From warning page, go back to date page
-                showSection('date-page');
-                return;
-            } else if (pageHistory.length > 0) {
-                const prevId = pageHistory.pop();
-                // Ensure the previous page is not a thank-you page after popping
-                document.querySelectorAll('main').forEach(section => {
-                    section.style.display = 'none';
-                });
-                document.getElementById(prevId).style.display = 'block';
-            } else {
-                // If history is empty, go to home or main page
-                goToHome();
-            }
-        }
-
-        function goToHome() {
-            // Clear history and show the appropriate home page
-            pageHistory.length = 0;
-            if (isLoggedIn) {
-                startSession(); // This handles unconfirmed appointments
-            } else {
-                showSection('main-page');
-            }
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('open');
-        }
-
-        function togglePasswordVisibility(inputId, icon) {
-            const input = document.getElementById(inputId);
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = "password";
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        }
-
-        function showFeedback(elementId, message, isError = false) {
+        function showFeedback(elementId, message, isError = true) {
             const element = document.getElementById(elementId);
             element.textContent = message;
             element.style.color = isError ? '#dc3545' : '#28a745';
             element.style.opacity = '1';
-
+            element.style.animation = 'fadeInOut 5s forwards'; // Apply animation
+            
             if (feedbackTimer) {
                 clearTimeout(feedbackTimer);
             }
 
+            // Manually clear the animation class after it finishes 
             feedbackTimer = setTimeout(() => {
-                element.style.opacity = '0';
-            }, 3000);
+                element.style.animation = ''; // Remove animation after it plays
+            }, 5000); 
+        }
+        
+        function togglePasswordVisibility(id, iconElement) {
+            const input = document.getElementById(id);
+            if (input.type === "password") {
+                input.type = "text";
+                iconElement.classList.remove('fa-eye');
+                iconElement.classList.add('fa-eye-slash');
+            } else {
+                input.type = "password";
+                iconElement.classList.remove('fa-eye-slash');
+                iconElement.classList.add('fa-eye');
+            }
         }
 
-        function saveUser() {
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            localStorage.setItem(`user-${user.email}`, JSON.stringify(user));
+
+        function formatNeedLevel(level) {
+            let color = '';
+            switch (level) {
+                case 'Critical': color = '#dc3545'; break;
+                case 'Urgent': color = '#ffc107'; break;
+                case 'Good Supply': color = '#28a745'; break;
+                default: color = '#6c757d';
+            }
+            return `<span style="font-weight: 700; color: ${color};">${level}</span>`;
         }
 
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function showSection(id) {
+            // Push current page to history before showing new one (unless it's the home page and history is empty)
+            const visiblePage = document.querySelector('main[style*="display: block"]');
+            if (visiblePage && visiblePage.id !== id) {
+                // Ensure we don't double-push the same page
+                if (pageHistory[pageHistory.length - 1] !== visiblePage.id) {
+                    pageHistory.push(visiblePage.id);
+                }
+            }
+            
+            document.querySelectorAll('main').forEach(main => {
+                main.style.display = 'none';
+            });
+            const newPage = document.getElementById(id);
+            if (newPage) {
+                newPage.style.display = 'block';
+                // Remove all previous animations before applying a new one
+                // newPage.classList.remove('container-animation'); 
+                // void newPage.offsetWidth; // Trigger reflow
+                // newPage.classList.add('container-animation'); // Removed to avoid potential visual glitches in a contained environment
+            }
+            
+            if (id === 'welcome-page') {
+                updateWelcomePage();
+            } else if (id === 'reports-page') {
+                renderReports();
+            } else if (id === 'awards-badges-page') {
+                renderAwardsBadges();
+            } else if (id === 'reviews-history-page') {
+                renderReviewsHistory();
+            } else if (id === 'account-page') {
+                showAccount();
+            }
+        }
+        
+        function goBack() {
+            if (pageHistory.length > 0) {
+                const previousPageId = pageHistory.pop();
+                // Pop the flow step if returning to a flow page from a general page
+                if (donationFlow.includes(previousPageId)) {
+                    currentFlowIndex = donationFlow.indexOf(previousPageId);
+                }
+                showSection(previousPageId);
+            } else {
+                // If on a login/signup form, go to main. If already logged in, go to welcome.
+                if (isLoggedIn) {
+                    showSection('welcome-page');
+                } else {
+                    showSection('main-page');
+                }
+            }
+        }
+
+        function showHelpPage() {
+            pageHistory.length = 0; // NEW: Reset history for direct access from sidebar
+            showSection('help-page');
+        }
+
+        function showChatbotPage() {
+            pageHistory.length = 0; // NEW: Reset history for direct access from floating button
+            showSection('chatbot-page');
+        }
+        
+        function goBackFromChatbot() {
+            goBack();
+        }
+
+
+        function showLogin() {
+            // Standard forward push, no history clear needed here
+            const currentPage = document.querySelector('main[style*="display: block"]');
+            if (currentPage && currentPage.id !== 'login-form') {
+                pageHistory.push(currentPage.id);
+            }
+            showSection('login-form');
+        }
+
+        function showSignup() {
+            // Standard forward push, no history clear needed here
+            const currentPage = document.querySelector('main[style*="display: block"]');
+            if (currentPage && currentPage.id !== 'signup-form') {
+                pageHistory.push(currentPage.id);
+            }
+            showSection('signup-form');
+        }
+        
+        function goToHome() {
+            pageHistory.length = 0; // *** FIX: Reset history for a clean slate when clicking Home ***
+            currentFlowIndex = -1; // Also reset flow index
+            if (isLoggedIn) {
+                showSection('welcome-page');
+            } else {
+                showSection('main-page');
+            }
+        }
+        
+        // --- Authentication & User Management ---
+        
         function signUp(event) {
             event.preventDefault();
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
-            const feedback = 'signup-feedback';
-            const button = document.getElementById('signup-btn');
-            
-            button.innerHTML = '<i class="fas fa-spinner loading-icon"></i> Signing Up...';
-            button.disabled = true;
 
-            // Simple validation and user creation simulation
-            if (localStorage.getItem(`user-${email}`)) {
-                setTimeout(() => {
-                    showFeedback(feedback, 'Error: An account with this email already exists.', true);
-                    button.innerHTML = 'Sign Up';
-                    button.disabled = false;
-                }, 1000);
+            // Basic validation
+            if (!name || !email || !password) {
+                showFeedback('signup-feedback', 'Please fill in all required fields.', true);
                 return;
             }
 
-            setTimeout(() => {
-                user = {
-                    id: Date.now(),
-                    name: name,
-                    email: email,
-                    // Store password for demo only
-                    password: password, 
-                    total_donations: 0,
-                    // NEW: Fields for annual badge and initial reward tracking
-                    annual_donations_count: 0,
-                    last_reset_year: new Date().getFullYear(),
-                    initial_reward_given: false
-                };
-                isLoggedIn = true;
-                saveUser();
-                localStorage.setItem(`userPassword-${email}`, password); // Storing the password for login check
-                
-                button.innerHTML = 'Sign Up';
-                button.disabled = false;
-                showFeedback(feedback, 'Success! Account created.');
-                
-                // Immediately start the donation process for the new user
-                startDonation();
-            }, 1500);
+            if (password.length < 6) {
+                showFeedback('signup-feedback', 'Password must be at least 6 characters long.', true);
+                return;
+            }
+
+            // Simple check to see if user exists (using email as unique key)
+            if (localStorage.getItem('userEmail') === email) {
+                showFeedback('signup-feedback', 'User already exists. Please login.', true);
+                return;
+            }
+
+            user = { name, email, city: null, donations: [] };
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            // In a real app, this would be hashed and stored server-side.
+            localStorage.setItem('userPassword', password); 
+            localStorage.setItem('userEmail', email); 
+            isLoggedIn = true;
+            
+            updateHeaderLinks(true);
+
+            // FIX: Use showFeedback and a slight delay before redirecting
+            showFeedback('signup-feedback', '✅ Sign Up successful! Redirecting...', false);
+            setTimeout(() => goToHome(), 1000); // Wait 1 second before redirection
         }
 
         function login(event) {
             event.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-            const feedback = 'login-feedback';
-            const button = document.getElementById('login-btn');
 
-            button.innerHTML = '<i class="fas fa-spinner loading-icon"></i> Logging In...';
-            button.disabled = true;
+            // Basic validation
+            if (!email || !password) {
+                showFeedback('login-feedback', 'Please fill in all required fields.', true);
+                return;
+            }
 
-            setTimeout(() => {
-                const storedUser = localStorage.getItem(`user-${email}`);
-                const storedPassword = localStorage.getItem(`userPassword-${email}`);
-
-                if (storedUser && storedPassword === password) {
-                    user = JSON.parse(storedUser);
-                    isLoggedIn = true;
-                    showFeedback(feedback, 'Success! Logged in.');
-                    
-                    button.innerHTML = 'Login';
-                    button.disabled = false;
-                    
-                    startSession(); // Go to welcome page
-                } else {
-                    showFeedback(feedback, 'Error: Invalid email or password.', true);
-                    button.innerHTML = 'Login';
-                    button.disabled = false;
-                }
-            }, 1500);
+            // Simple validation
+            if (localStorage.getItem('userEmail') !== email || localStorage.getItem('userPassword') !== password) {
+                showFeedback('login-feedback', 'Invalid email or password.', true);
+                return;
+            }
+            
+            // Reload the user data from storage
+            user = JSON.parse(localStorage.getItem('currentUser'));
+            isLoggedIn = true;
+            
+            updateHeaderLinks(true);
+            
+            // FIX: Use showFeedback and a slight delay before redirecting
+            showFeedback('login-feedback', '✅ Login successful! Redirecting...', false);
+            setTimeout(() => goToHome(), 1000); // Wait 1 second before redirection
         }
 
         function logout() {
-            if (user) {
-                // Save current user state before logging out (in case they have badges/stats)
-                saveUser(); 
-                user = null;
-                isLoggedIn = false;
-                // Clear session-specific data if needed, but keep global data.
-            }
-            // Clear history and start session to go to the main page
-            pageHistory.length = 0;
-            startSession();
+            user = null;
+            isLoggedIn = false;
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('donationInProgress');
+            localStorage.removeItem('unconfirmedDonation'); // Clear unconfirmed donation on logout
+            updateHeaderLinks(false);
+            goToHome(); // Use goToHome which clears history
+            showFeedback('login-feedback', 'Logged out successfully.', false);
         }
-
+        
+        function showAccount() {
+            if (!isLoggedIn) return goToHome();
+            pageHistory.length = 0; // *** FIX: Reset history for sidebar jump ***
+            document.getElementById('accountName').textContent = user.name;
+            document.getElementById('accountEmail').textContent = user.email;
+            
+            // NEW: Load Profile Picture
+            const picDisplay = document.getElementById('profile-picture-display');
+            const removeBtn = document.getElementById('remove-profile-pic-btn');
+            if (user.profilePicUrl) {
+                picDisplay.src = user.profilePicUrl;
+                removeBtn.style.display = 'block';
+            } else {
+                // Default image with the user's initial
+                const initial = user.name ? user.name.charAt(0).toUpperCase() : 'U';
+                picDisplay.src = `https://via.placeholder.com/100/dc3545/ffffff?text=${initial}`;
+                removeBtn.style.display = 'none';
+            }
+            showSection('account-page');
+        }
+        
+        function showChangePassword() {
+            if (!isLoggedIn) return goToHome();
+            pageHistory.length = 0; // *** FIX: Reset history for sidebar jump ***
+            document.getElementById('changePasswordForm').reset();
+            showSection('change-password-page');
+        }
+        
         function changePassword(event) {
             event.preventDefault();
             const currentPassword = document.getElementById('currentPassword').value;
             const newPassword = document.getElementById('newPassword').value;
             const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-            const feedback = 'password-feedback';
-            const button = document.getElementById('change-password-btn');
+            const feedback = document.getElementById('password-feedback');
 
-            button.innerHTML = '<i class="fas fa-spinner loading-icon"></i> Changing...';
-            button.disabled = true;
-
-            setTimeout(() => {
-                const storedPassword = localStorage.getItem(`userPassword-${user.email}`);
-
-                if (currentPassword !== storedPassword) {
-                    showFeedback(feedback, 'Error: Current password is incorrect.', true);
-                } else if (newPassword.length < 6) {
-                    showFeedback(feedback, 'Error: New password must be at least 6 characters.', true);
-                } else if (newPassword !== confirmNewPassword) {
-                    showFeedback(feedback, 'Error: New passwords do not match.', true);
-                } else {
-                    // Update password in local storage
-                    localStorage.setItem(`userPassword-${user.email}`, newPassword);
-                    // Update password in the user object (for demo purposes)
-                    user.password = newPassword; 
-                    saveUser();
-                    showFeedback(feedback, 'Success! Your password has been changed.');
-                    // Go back to the account page after a short delay
-                    setTimeout(showAccount, 1500);
-                }
-                button.innerHTML = 'Change Password';
-                button.disabled = false;
-            }, 1500);
-        }
-
-        function showLogin() {
-            document.getElementById('loginForm').reset();
-            showSection('login-form');
-        }
-
-        function showSignup() {
-            document.getElementById('signupForm').reset();
-            showSection('signup-form');
-        }
-
-        function showAccount() {
-            showSection('account-page');
-        }
-
-        function showChangePassword() {
-            document.getElementById('changePasswordForm').reset();
-            showSection('change-password-page');
-        }
-
-        function startDonation() {
-            // Clear previous donation data
-            donationData = {};
-            // Start the donation process
-            showSection('age-page');
-        }
-
-        function startRequest() {
-            document.getElementById('requestBloodType').value = '';
-            document.getElementById('requestCity').value = '';
-            document.getElementById('requestDate').value = '';
-            document.getElementById('requestReason').value = '';
-            // Ensure the dynamic 'Other City' input is hidden
-            const otherRequestCityInput = document.getElementById('otherRequestCity').parentElement;
-            otherRequestCityInput.style.maxHeight = '0';
-            
-            showSection('request-blood-page');
-        }
-        
-        function saveAge() {
-            const age = document.getElementById('age').value;
-            if (parseInt(age) < 18 || !age) {
-                alert("You must be 18 or older to donate blood.");
+            if (currentPassword !== localStorage.getItem('userPassword')) {
+                showFeedback('password-feedback', 'Current password is incorrect.', true);
                 return;
             }
-            donationData.age = age;
-            showSection('blood-type-page');
+
+            if (newPassword.length < 6) {
+                showFeedback('password-feedback', 'New password must be at least 6 characters long.', true);
+                return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                showFeedback('password-feedback', 'New passwords do not match.', true);
+                return;
+            }
+
+            localStorage.setItem('userPassword', newPassword);
+            showFeedback('password-feedback', 'Password changed successfully!', false);
+            document.getElementById('changePasswordForm').reset();
+            
+            // Optionally redirect after a brief delay
+            setTimeout(() => goBack(), 1000); 
+        }
+        
+        // NEW: Profile Picture Handlers
+        function handleProfilePictureChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    user.profilePicUrl = e.target.result;
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    showAccount(); // Re-render the account page
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeProfilePicture() {
+            if (user && user.profilePicUrl) {
+                delete user.profilePicUrl;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showAccount();
+            }
+        }
+
+
+        // --- Donation Flow Logic ---
+
+        // Map page IDs to a sequence
+        const donationFlow = ['age-page', 'blood-type-page', 'city-page', 'hospital-page', 'date-page', 'sickness-page', 'review-page'];
+        let currentFlowIndex = -1;
+        let donationInProgress = JSON.parse(localStorage.getItem('donationInProgress')) || null;
+
+        function startDonation() {
+            if (!isLoggedIn) return showSection('main-page');
+            
+            pageHistory.length = 0; // *** FIX: Clear history when starting a flow from the sidebar/home ***
+            currentFlowIndex = -1; // Reset flow index on start
+            
+            // If the user has an unconfirmed donation in the past, show confirmation page first
+            if (unconfirmedDonation && new Date(unconfirmedDonation.date) < new Date()) {
+                document.getElementById('unconfirmed-date-display').textContent = formatDate(unconfirmedDonation.date);
+                document.getElementById('unconfirmed-hospital-display').textContent = unconfirmedDonation.hospital;
+                return showSection('confirm-attendance-page');
+            }
+
+            // Start a new flow, clearing old data
+            donationInProgress = { age: '', bloodType: '', city: '', hospital: '', date: '', sickness: '' };
+            localStorage.setItem('donationInProgress', JSON.stringify(donationInProgress));
+            currentFlowIndex = 0;
+            showSection(donationFlow[currentFlowIndex]);
+        }
+        
+        function startRequest() {
+            if (!isLoggedIn) return showSection('main-page');
+            pageHistory.length = 0; // *** FIX: Clear history when starting a request from the sidebar/home ***
+            currentFlowIndex = -1; // Reset flow index
+            showSection('request-blood-page');
+        }
+
+
+        function goToNextDonationStep() {
+            currentFlowIndex++;
+            if (currentFlowIndex < donationFlow.length) {
+                if (donationFlow[currentFlowIndex] === 'review-page') {
+                    reviewDonation();
+                }
+                showSection(donationFlow[currentFlowIndex]);
+            } else {
+                // Should not happen if review is the last step
+                goToHome(); 
+            }
+        }
+        
+        // NEW: Dedicated function for stepping back in the donation flow
+        function goToPreviousFlowStep() {
+            if (currentFlowIndex > 0) {
+                currentFlowIndex--;
+                showSection(donationFlow[currentFlowIndex]);
+            } else {
+                // If on the first step of the flow, use the global back function (which goes to welcome)
+                goBack();
+            }
+        }
+
+        function saveAge() {
+            const age = document.getElementById('age').value;
+            if (!age || age < 18 || age > 65) {
+                alert('You must be between 18 and 65 to donate.');
+                return;
+            }
+            donationInProgress.age = age;
+            localStorage.setItem('donationInProgress', JSON.stringify(donationInProgress));
+            goToNextDonationStep();
         }
 
         function saveBloodType() {
             const bloodType = document.querySelector('input[name="bloodType"]:checked');
             if (!bloodType) {
-                alert("Please select your blood type.");
+                alert('Please select your blood type.');
                 return;
             }
-            donationData.bloodType = bloodType.value;
-            showSection('city-page');
+            donationInProgress.bloodType = bloodType.value;
+            localStorage.setItem('donationInProgress', JSON.stringify(donationInProgress));
+            goToNextDonationStep();
         }
-
+        
         function saveCity() {
             let city = document.getElementById('city').value;
             if (city === 'Other') {
-                city = document.getElementById('otherCity').value;
+                city = document.getElementById('otherCity').value.trim();
             }
             if (!city) {
-                alert("Please select a city or enter a custom city.");
+                alert('Please select or enter your city.');
                 return;
             }
-            donationData.city = city;
-            showSection('hospital-page');
+            donationInProgress.city = city;
+            
+            // Update user's city if it's not set
+            if (!user.city) {
+                user.city = city;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+            }
+
+            localStorage.setItem('donationInProgress', JSON.stringify(donationInProgress));
+            
+            // Populate hospitals for the next step
+            populateHospitalList(city);
+            goToNextDonationStep();
         }
         
-        // New function to dynamically populate the hospital dropdown based on daily data
-        function populateHospitalSelect() {
+        function populateHospitalList(city) {
             const hospitalSelect = document.getElementById('hospital');
             hospitalSelect.innerHTML = '<option value="">Select a hospital</option>';
             
-            // Filter the daily list to only show hospitals in the user's selected city
-            const filteredHospitals = HOSPITAL_LOCATIONS.filter(h => h.city === donationData.city);
+            // Filter hospitals by city or include all if city is 'Other'
+            const cityHospitals = HOSPITAL_LOCATIONS.filter(h => h.city === city || city === 'Other');
             
-            filteredHospitals.forEach(hospital => {
+            cityHospitals.forEach(hospital => {
                 const option = document.createElement('option');
                 option.value = hospital.name;
-                option.textContent = hospital.name;
+                option.textContent = `${hospital.name} (${hospital.city}) - Need: ${hospital.need_level}`;
                 hospitalSelect.appendChild(option);
             });
             
-            // Add the 'Other' option
             const otherOption = document.createElement('option');
             otherOption.value = 'Other';
-            otherOption.textContent = 'Other';
+            otherOption.textContent = 'Other (Enter manually)';
             hospitalSelect.appendChild(otherOption);
+            
+            // Reset the 'Other' input visibility
+            document.getElementById('otherHospital').value = '';
+            document.getElementById('otherHospital').parentElement.style.maxHeight = '0';
         }
 
         function saveHospital() {
             let hospital = document.getElementById('hospital').value;
             if (hospital === 'Other') {
-                hospital = document.getElementById('otherHospital').value;
+                hospital = document.getElementById('otherHospital').value.trim();
             }
             if (!hospital) {
-                alert("Please select a hospital or enter a custom hospital.");
+                alert('Please select or enter a hospital.');
                 return;
             }
-            donationData.hospital = hospital;
-            showSection('date-page');
+            donationInProgress.hospital = hospital;
+            localStorage.setItem('donationInProgress', JSON.stringify(donationInProgress));
+            goToNextDonationStep();
         }
 
         function saveDate() {
-            const dateInput = document.getElementById('donationDate');
-            const donationDate = dateInput.value;
-            
-            if (!donationDate) {
-                alert("Please select a donation date.");
+            const dateInput = document.getElementById('donationDate').value;
+            if (!dateInput) {
+                alert('Please select a date.');
                 return;
             }
             
-            const selectedDate = new Date(donationDate);
+            const selectedDate = new Date(dateInput);
             const today = new Date();
-            today.setHours(0,0,0,0); // Normalize 'today' to the start of the day
-            
+            // Reset time part for accurate comparison
+            selectedDate.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+
             if (selectedDate < today) {
-                alert("The donation date cannot be in the past.");
+                alert('The donation date cannot be in the past.');
                 return;
             }
+            
+            donationInProgress.date = dateInput;
+            localStorage.setItem('donationInProgress', JSON.stringify(donationInProgress));
             
             // Check for 56-day rule
-            const allConfirmedDonations = allDonations.filter(d => d.email === user.email && d.confirmed === true);
-            if (allConfirmedDonations.length > 0) {
-                // Find the latest confirmed donation date
-                const lastDonationDateStr = allConfirmedDonations.reduce((latest, current) => {
-                    return (new Date(current.date) > new Date(latest.date)) ? current : latest;
-                }).date;
-                const lastDonationDate = new Date(lastDonationDateStr);
-
-                // Calculate the 56-day interval
-                const nextRecommendedDate = new Date(lastDonationDate);
-                nextRecommendedDate.setDate(lastDonationDate.getDate() + 56);
-                nextRecommendedDate.setHours(0,0,0,0);
-
-                if (selectedDate < nextRecommendedDate) {
-                    // Show warning page
-                    document.getElementById('lastDonationDateDisplay').textContent = lastDonationDateStr;
-                    document.getElementById('nextRecommendedDateDisplay').textContent = nextRecommendedDate.toLocaleDateString();
-                    document.getElementById('selectedDonationDateDisplay').textContent = donationDate;
-                    showSection('donation-warning-page');
+            const donations = allDonations.filter(d => d.userEmail === user.email && d.status === 'Completed');
+            if (donations.length > 0) {
+                const lastDonation = new Date(donations.sort((a, b) => new Date(b.date) - new Date(a.date))[0].date);
+                const daysSinceLast = dateDifferenceInDays(lastDonation, selectedDate);
+                
+                if (daysSinceLast < 56) {
+                    const nextRecommendedDate = new Date(lastDonation);
+                    nextRecommendedDate.setDate(lastDonation.getDate() + 56);
                     
-                    // We need to keep track of the selected date for when the user skips the warning
-                    donationData.date = donationDate;
-                    return; 
+                    document.getElementById('lastDonationDateDisplay').textContent = formatDate(lastDonation);
+                    document.getElementById('selectedDonationDateDisplay').textContent = formatDate(selectedDate);
+                    document.getElementById('nextRecommendedDateDisplay').textContent = formatDate(nextRecommendedDate);
+                    
+                    showSection('donation-warning-page');
+                    return;
                 }
             }
 
-            // If no warning needed (or they are a first-time donor)
-            donationData.date = donationDate;
-            showSection('sickness-page');
+            // Proceed normally
+            goToNextDonationStep();
         }
         
         function skipWarning() {
-            // The date is already stored in donationData from saveDate()
-            showSection('sickness-page');
+            // User chose to proceed despite the warning
+            goToNextDonationStep(); 
         }
 
         function saveSickness() {
-            const sickness = document.getElementById('sickness').value;
+            const sickness = document.getElementById('sickness').value.trim();
             if (!sickness) {
-                alert("Please enter any sicknesses or 'None'.");
+                 alert('Please enter any sicknesses or type "None".');
                 return;
             }
-            donationData.sickness = sickness;
-            
-            // Display review data
-            document.getElementById('reviewAge').textContent = donationData.age;
-            document.getElementById('reviewBloodType').textContent = donationData.bloodType;
-            document.getElementById('reviewCity').textContent = donationData.city;
-            document.getElementById('reviewHospital').textContent = donationData.hospital;
-            document.getElementById('reviewDate').textContent = donationData.date;
-            document.getElementById('reviewSickness').textContent = donationData.sickness;
-            
-            showSection('review-page');
+            donationInProgress.sickness = sickness;
+            localStorage.setItem('donationInProgress', JSON.stringify(donationInProgress));
+            goToNextDonationStep();
+        }
+
+        function reviewDonation() {
+            document.getElementById('reviewAge').textContent = donationInProgress.age;
+            document.getElementById('reviewBloodType').textContent = donationInProgress.bloodType;
+            document.getElementById('reviewCity').textContent = donationInProgress.city;
+            document.getElementById('reviewHospital').textContent = donationInProgress.hospital;
+            document.getElementById('reviewDate').textContent = formatDate(donationInProgress.date);
+            document.getElementById('reviewSickness').textContent = donationInProgress.sickness;
         }
 
         function confirmDonation() {
+            // Create a new donation record
             const newDonation = {
                 id: Date.now(),
-                email: user.email,
-                name: user.name,
-                bloodType: donationData.bloodType,
-                city: donationData.city,
-                hospital: donationData.hospital,
-                date: donationData.date,
-                sickness: donationData.sickness,
-                confirmed: false // Default to unconfirmed until user verifies attendance
+                userEmail: user.email,
+                userName: user.name,
+                ...donationInProgress,
+                submissionDate: new Date().toISOString().split('T')[0],
+                status: 'Pending' // Initial status is pending
             };
-            
-            // Store the ID of this donation as the one awaiting confirmation
-            unconfirmedDonation = {
-                id: newDonation.id,
-                date: newDonation.date,
-                hospital: newDonation.hospital
-            };
-            
-            // Clear the old unconfirmed donation from the full list if it exists and wasn't confirmed/missed
-            allDonations = allDonations.filter(d => d.confirmed !== false && d.email === user.email);
-            
-            // Add the new donation to the main list
-            allDonations.push(newDonation);
 
-            // Save all updated data
+            // Save the donation to the master list
+            allDonations.push(newDonation);
             localStorage.setItem('allDonations', JSON.stringify(allDonations));
+            
+            // Set this as the unconfirmed donation to prompt for attendance later
+            unconfirmedDonation = { 
+                id: newDonation.id, 
+                date: newDonation.date, 
+                hospital: newDonation.hospital,
+                userEmail: user.email
+            };
             localStorage.setItem('unconfirmedDonation', JSON.stringify(unconfirmedDonation));
 
+            // Clear the in-progress state
+            donationInProgress = null;
+            localStorage.removeItem('donationInProgress');
+            currentFlowIndex = -1; // Reset flow index
+
             // Show thank you page
-            document.getElementById('confirmed-date').textContent = newDonation.date;
+            document.getElementById('confirmed-date').textContent = formatDate(newDonation.date);
             showSection('thank-you-page');
         }
         
-        function clearUnconfirmedDonation() {
-            if (unconfirmedDonation) {
-                const donationToClear = allDonations.find(d => d.id === unconfirmedDonation.id);
-                if (donationToClear) {
-                    // Remove the pending/unconfirmed entry from the master list
-                    allDonations = allDonations.filter(d => d.id !== unconfirmedDonation.id);
-                    localStorage.setItem('allDonations', JSON.stringify(allDonations));
-                    
-                    // Clear the upcoming appointment card
-                    document.getElementById('upcoming-appointment-card').style.display = 'none';
-                    document.getElementById('appointment-reminder').style.display = 'none';
-                }
-                
-                // Clear the unconfirmed tracker
-                unconfirmedDonation = null;
-                localStorage.removeItem('unconfirmedDonation');
-                
-                alert('Your upcoming appointment has been cleared.');
-                startSession(); // Refresh to ensure correct display
-            }
-        }
-        
         function confirmAttendance(attended) {
-            if (!unconfirmedDonation) return;
+            if (!unconfirmedDonation || unconfirmedDonation.userEmail !== user.email) {
+                // Safety check
+                clearUnconfirmedDonation();
+                return goToHome();
+            }
 
             const donationIndex = allDonations.findIndex(d => d.id === unconfirmedDonation.id);
 
             if (donationIndex !== -1) {
-                allDonations[donationIndex].confirmed = attended;
-
                 if (attended) {
-                    // Update user's stats only if confirmed
-                    user.total_donations += 1;
-                    user.annual_donations_count += 1; // Increment annual count
-                    saveUser();
+                    allDonations[donationIndex].status = 'Completed';
                     
-                    // Award check (no arguments needed now)
-                    checkAwards();
-
-                    // NEW: Check for the initial reward after the confirmation
-                    if (user.total_donations === 3 && user.initial_reward_given === false) {
-                        issueInitialReward();
-                    }
-                    
-                    alert("Thank you! Your donation has been successfully recorded.");
+                    // Increment user's donation count for badges
+                    if (!user.donationsCount) user.donationsCount = 0;
+                    user.donationsCount++;
                 } else {
-                    alert("Your appointment has been marked as missed. You can schedule a new one at any time.");
+                    allDonations[donationIndex].status = 'Missed';
                 }
                 
-                // Save updated allDonations array
                 localStorage.setItem('allDonations', JSON.stringify(allDonations));
-            } else {
-                alert("Error: Could not find the pending donation record.");
+                localStorage.setItem('currentUser', JSON.stringify(user)); // Save updated user info
             }
+
+            // Clear the temporary unconfirmed flag
+            clearUnconfirmedDonation();
             
-            // Clear the unconfirmed tracker
+            // Reroute home
+            goToHome();
+            alert(attended ? "Attendance confirmed! Thank you for donating." : "Appointment marked as missed.");
+        }
+        
+        function clearUnconfirmedDonation() {
             unconfirmedDonation = null;
             localStorage.removeItem('unconfirmedDonation');
-            
-            startSession(); // Go back to welcome page
-        }
-        
-        // NEW: Function to issue the initial reward
-        function issueInitialReward() {
-            if (user && user.initial_reward_given === false) {
-                user.initial_reward_given = true;
-                saveUser();
-                
-                // Notify the user
-                alert("🎉 CONGRATULATIONS! 🎉\n\nYou have completed your third donation and earned the Initial Hero Gift!\n\nUse code **BLODO-HERO-10** for a 10% discount on health products at our partner store!");
-                
-                // Re-render badges to show the new one is unlocked
-                renderAwardsBadges();
-            }
-        }
-        
-        // REFACTORED: checkAwards now calculates donations internally and handles custom logic
-        function checkAwards() {
-            // Get all confirmed donations for the current user
-            const userDonations = allDonations.filter(d => d.email === user.email && d.confirmed === true);
-            const totalDonations = userDonations.length;
-            const unlockedBadges = user.unlocked_badges || [];
-            
-            // Data needed for conditional checks
-            let userBloodType = '';
-            let userCity = '';
-            if (userDonations.length > 0) {
-                // Get the data from the most recent confirmed donation
-                const latestDonation = userDonations.reduce((latest, current) => {
-                    return (new Date(current.date) > new Date(latest.date)) ? current : latest;
-                });
-                userBloodType = latestDonation.bloodType;
-                userCity = latestDonation.city;
-            }
-
-            AWARDS.forEach(award => {
-                if (unlockedBadges.includes(award.id)) return; // Skip if already unlocked
-
-                let conditionMet = false;
-
-                // 1. Total Donation Count Badges (First Timer, Triple, Super Saver, Marathon, Initial Hero Gift)
-                if (award.requiredDonations > 0 && !award.isAnnual && !award.isLocal && !award.isBloodType) {
-                    if (totalDonations >= award.requiredDonations) {
-                        conditionMet = true;
-                    }
-                } 
-                // 2. Annual Badge (Annual Champion)
-                else if (award.isAnnual) {
-                    if (user.annual_donations_count >= award.requiredDonations) {
-                        conditionMet = true;
-                    }
-                }
-                // 3. Universal Donor Badge (O- blood type check)
-                else if (award.isBloodType && award.id === 'universal-donor') {
-                    if (userBloodType === 'O-') {
-                        conditionMet = true;
-                    }
-                }
-                // 4. Local Hero Badge (3 donations in registered city)
-                else if (award.isLocal) {
-                    // Count donations in the user's city
-                    const cityDonations = userDonations.filter(d => d.city === userCity);
-                    if (cityDonations.length >= award.requiredDonations) {
-                        conditionMet = true;
-                    }
-                }
-
-                // If condition is met, unlock and alert
-                if (conditionMet) {
-                    unlockedBadges.push(award.id);
-                    alert(`Congratulations! You unlocked the ${award.name} badge!`);
-                }
-            });
-
-            user.unlocked_badges = unlockedBadges;
-            saveUser();
+            updateWelcomePage(); // Refresh welcome page to hide card/reminder
         }
 
-        // FIX: Ensure this function is explicitly defined for the sidebar link
-        function showAwardsBadges() {
-            showSection('awards-badges-page');
-            renderAwardsBadges();
-        }
-
-        function renderAwardsBadges() {
-            const grid = document.getElementById('awards-grid');
-            grid.innerHTML = '';
-            
-            const allBadges = AWARDS;
-            const unlockedIds = user.unlocked_badges || [];
-            
-            // Remove previous banner if one exists
-            const existingBanner = grid.previousElementSibling;
-            if (existingBanner && existingBanner.classList.contains('reminder-banner')) {
-                 existingBanner.remove();
-            }
-
-            // Add initial gift message if earned
-            if (user.initial_reward_given) {
-                grid.insertAdjacentHTML('beforebegin', '<div class="reminder-banner" style="background-color: gold; color: #333; margin-bottom: 2rem;"><i class="fas fa-gift"></i> **Your Gift Code: BLODO-HERO-10**</div>');
-            }
-
-
-            allBadges.forEach(award => {
-                const isUnlocked = unlockedIds.includes(award.id);
-                const badgeCard = document.createElement('div');
-                badgeCard.className = `badge-card ${isUnlocked ? 'unlocked' : ''}`;
-                
-                let progress = '';
-                if (award.isAnnual) {
-                    progress = `(${user.annual_donations_count}/${award.requiredDonations} this year)`;
-                } else if (award.isBloodType) {
-                    progress = 'Required: O- Blood';
-                } else if (award.isLocal) {
-                    const userDonations = allDonations.filter(d => d.email === user.email && d.confirmed === true);
-                    let userCity = userDonations.length > 0 ? userDonations[userDonations.length - 1].city : 'N/A';
-                    const cityDonationsCount = userDonations.filter(d => d.city === userCity).length;
-                    progress = `(${cityDonationsCount}/${award.requiredDonations} in ${userCity})`;
-                } else if (award.requiredDonations > 0) {
-                    progress = `(${user.total_donations}/${award.requiredDonations})`;
-                }
-                
-                const progressText = `<p style="font-size: 0.8rem; color: #555;">${isUnlocked ? 'UNLOCKED' : progress}</p>`;
-
-                badgeCard.innerHTML = `
-                    <i class="${award.icon} badge-icon"></i>
-                    <div class="badge-name">${award.name}</div>
-                    <p style="font-size: 0.9rem; margin-top: 5px;">${award.description}</p>
-                    ${progressText}
-                `;
-                
-                grid.appendChild(badgeCard);
-            });
-        }
-
+        // --- Blood Request Logic ---
 
         function submitRequest() {
             const bloodType = document.getElementById('requestBloodType').value;
             let city = document.getElementById('requestCity').value;
             if (city === 'Other') {
-                city = document.getElementById('otherRequestCity').value;
+                city = document.getElementById('otherRequestCity').value.trim();
             }
             const date = document.getElementById('requestDate').value;
             const reason = document.getElementById('requestReason').value;
 
             if (!bloodType || !city || !date || !reason) {
-                alert("Please fill in all request fields.");
+                alert('Please fill out all fields.');
                 return;
             }
 
             const newRequest = {
                 id: Date.now(),
-                requesterEmail: user.email,
-                bloodType: bloodType,
-                city: city,
-                dateNeeded: date,
-                reason: reason
+                userEmail: user.email,
+                userName: user.name,
+                bloodType,
+                city,
+                date: new Date(date).toISOString().split('T')[0],
+                reason,
+                submissionDate: new Date().toISOString().split('T')[0]
             };
 
             allRequests.push(newRequest);
             localStorage.setItem('allRequests', JSON.stringify(allRequests));
-
+            
+            // Show thank you page
             showSection('request-thank-you-page');
         }
-        
-        function renderReports() {
-            // Donations Table
-            const donationsContainer = document.getElementById('donations-table-container');
-            const confirmedDonations = allDonations.filter(d => d.confirmed === true);
-            
-            if (confirmedDonations.length === 0) {
-                donationsContainer.innerHTML = '<p id="no-donations-message" style="text-align: center; color: #777;">No donations have been submitted yet.</p>';
-            } else {
-                let tableHTML = `
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Blood Type</th>
-                                <th>City</th>
-                                <th>Hospital</th>
-                                <th>Date</th>
-                                <th>Sickness</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                `;
-                confirmedDonations.forEach(d => {
-                    const status = d.confirmed === true ? 'Completed' : (d.confirmed === false ? 'Missed' : 'Pending');
-                    const statusColor = d.confirmed === true ? '#28a745' : (d.confirmed === false ? '#f44336' : '#ffc107');
-                    
-                    tableHTML += `
-                        <tr>
-                            <td>${d.name}</td>
-                            <td>${d.bloodType}</td>
-                            <td>${d.city}</td>
-                            <td>${d.hospital}</td>
-                            <td>${d.date}</td>
-                            <td>${d.sickness}</td>
-                            <td style="color: ${statusColor}; font-weight: 600;">${status}</td>
-                        </tr>
-                    `;
-                });
-                tableHTML += '</tbody></table>';
-                donationsContainer.innerHTML = tableHTML;
-            }
 
-            // Requests Table
-            const requestsContainer = document.getElementById('requests-table-container');
-            if (allRequests.length === 0) {
-                requestsContainer.innerHTML = '<p id="no-requests-message" style="text-align: center; color: #777;">No requests have been submitted yet.</p>';
-            } else {
-                let tableHTML = `
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Blood Type</th>
-                                <th>City</th>
-                                <th>Date Needed</th>
-                                <th>Reason</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                `;
-                allRequests.forEach(r => {
-                    tableHTML += `
-                        <tr>
-                            <td>${r.bloodType}</td>
-                            <td>${r.city}</td>
-                            <td>${r.dateNeeded}</td>
-                            <td>${r.reason}</td>
-                        </tr>
-                    `;
-                });
-                tableHTML += '</tbody></table>';
-                requestsContainer.innerHTML = tableHTML;
-            }
-        }
+        // --- Donation Centers Logic ---
         
-        function exportToExcel() {
-            if (allDonations.length === 0 && allRequests.length === 0) {
-                alert("There is no data to export.");
+        function renderDonationCenters() {
+            pageHistory.length = 0; // *** FIX: Reset history for sidebar jump ***
+            showSection('donation-centers-page');
+            filterCenters(); // Call filter function which also renders
+        }
+
+        function filterCenters() {
+            const searchInput = document.getElementById('center-search-input').value.toLowerCase();
+            const centersList = document.getElementById('centers-list');
+            centersList.innerHTML = ''; // Clear previous list
+
+            let filteredCenters = HOSPITAL_LOCATIONS.filter(center => 
+                center.name.toLowerCase().includes(searchInput) ||
+                center.city.toLowerCase().includes(searchInput) ||
+                center.need_level.toLowerCase().includes(searchInput)
+            );
+
+            if (filteredCenters.length === 0) {
+                centersList.innerHTML = '<p style="text-align: center; color: #777;">No centers found matching your search criteria.</p>';
                 return;
             }
 
-            let csvContent = "data:text/csv;charset=utf-8,";
-            
-            // --- Donations CSV ---
-            csvContent += "--- Donations Report ---\n";
-            if (allDonations.length > 0) {
-                const donationHeaders = ["Name", "Email", "Blood Type", "City", "Hospital", "Date", "Sickness", "Status"];
-                csvContent += donationHeaders.join(",") + "\n";
-                allDonations.forEach(d => {
-                    const status = d.confirmed === true ? 'Completed' : (d.confirmed === false ? 'Missed' : 'Pending');
-                    const row = [d.name, d.email, d.bloodType, d.city, d.hospital, d.date, d.sickness, status];
-                    csvContent += row.join(",") + "\n";
-                });
-            } else {
-                csvContent += "No Donation Records\n";
-            }
-
-            // --- Requests CSV ---
-            csvContent += "\n--- Requests Report ---\n";
-            if (allRequests.length > 0) {
-                const requestHeaders = ["Requester Email", "Blood Type", "City", "Date Needed", "Reason"];
-                csvContent += requestHeaders.join(",") + "\n";
-                allRequests.forEach(r => {
-                    // Sanitize reason field for CSV by enclosing in quotes if it contains commas
-                    const reason = r.reason.includes(',') ? `"${r.reason.replace(/"/g, '""')}"` : r.reason;
-                    const row = [r.requesterEmail, r.bloodType, r.city, r.dateNeeded, reason];
-                    csvContent += row.join(",") + "\n";
-                });
-            } else {
-                csvContent += "No Request Records\n";
-            }
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "BLODO_Report_" + new Date().toISOString().slice(0, 10) + ".csv");
-            document.body.appendChild(link); // Required for Firefox
-            link.click();
-            document.body.removeChild(link);
-            
-            alert("Data exported successfully!");
+            filteredCenters.forEach(center => {
+                const card = document.createElement('div');
+                card.className = 'review-card'; // Reusing style for consistency
+                card.innerHTML = `
+                    <h3>${center.name} (${center.city})</h3>
+                    <p><strong>Contact:</strong> ${center.contact}</p>
+                    <p><strong>Address:</strong> ${center.address}</p>
+                    <p><strong>Current Blood Need:</strong> ${formatNeedLevel(center.need_level)}</p>
+                `;
+                centersList.appendChild(card);
+            });
         }
         
-        function resetData() {
-            if (confirm("WARNING: This will clear ALL donation, request, and review data for all users. Are you sure?")) {
-                localStorage.clear();
-                // Re-initialize variables to empty state
-                user = null;
-                isLoggedIn = false;
-                donationData = {};
-                pageHistory.length = 0;
-                allDonations = [];
-                allRequests = [];
-                unconfirmedDonation = null;
-                allReviews = [];
-                // Re-inject dummy reviews
-                location.reload(); 
+        // --- Awards & Badges Logic ---
+
+        function showAwardsBadges() {
+            if (!isLoggedIn) return goToHome();
+            pageHistory.length = 0; // *** FIX: Reset history for sidebar jump ***
+            showSection('awards-badges-page');
+        }
+        
+        function renderAwardsBadges() {
+            const grid = document.getElementById('awards-grid');
+            grid.innerHTML = '';
+            
+            const completedDonations = allDonations.filter(d => d.userEmail === user.email && d.status === 'Completed').length;
+            const localDonations = allDonations.filter(d => d.userEmail === user.email && d.status === 'Completed' && d.city === user.city).length;
+
+            AWARDS.forEach(award => {
+                let unlocked = false;
+
+                if (award.isBloodType) {
+                    unlocked = user.bloodType === 'O-';
+                } else if (award.isLocal) {
+                    unlocked = localDonations >= award.requiredDonations;
+                } else {
+                    unlocked = completedDonations >= award.requiredDonations;
+                }
+
+                const card = document.createElement('div');
+                card.className = `badge-card ${unlocked ? 'unlocked' : ''}`;
+                card.title = unlocked ? `${award.description}` : `Required: ${award.description}`;
+                card.innerHTML = `
+                    <i class="${award.icon} badge-icon"></i>
+                    <div class="badge-name">${award.name}</div>
+                    <small style="color: ${unlocked ? '#dc3545' : '#777'}; display: block; margin-top: 5px;">${unlocked ? 'UNLOCKED' : `${award.requiredDonations > 0 ? `${award.requiredDonations} donations` : 'Special requirement'}`}</small>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        // --- Reviews Logic ---
+
+        let editingReviewId = null;
+
+        function showReviewForm(reviewId = null) {
+            if (!isLoggedIn) return goToHome();
+            pageHistory.length = 0; // *** FIX: Reset history for sidebar jump ***
+            editingReviewId = reviewId;
+            const review = allReviews.find(r => r.id === reviewId && r.userName === user.name);
+            const form = document.getElementById('reviewForm');
+            
+            form.reset();
+            setRating(0, false); // Clear stars
+
+            if (review) {
+                document.querySelector('#review-form-page h2').textContent = 'Edit Your Review';
+                document.getElementById('reviewComment').value = review.comment;
+                setRating(review.rating, false);
+            } else {
+                document.querySelector('#review-form-page h2').textContent = 'Submit a Review';
+            }
+            showSection('review-form-page');
+        }
+        
+        function showReviewsHistoryPage() {
+            pageHistory.length = 0; // *** FIX: Reset history for sidebar jump ***
+            showSection('reviews-history-page');
+        }
+        
+        function setRating(rating, isInteractive) {
+            const stars = document.querySelectorAll('#rating-stars .fa-star');
+            const ratingInput = document.getElementById('reviewRating');
+            
+            stars.forEach(star => {
+                const starRating = parseInt(star.getAttribute('data-rating'));
+                if (starRating <= rating) {
+                    star.classList.add('checked');
+                } else {
+                    star.classList.remove('checked');
+                }
+                if (isInteractive) {
+                    star.style.color = 'gold'; // Temporary visual for hover
+                }
+            });
+            
+            // Only update the hidden input if it's not a temporary hover effect or part of form load
+            if (!isInteractive) {
+                ratingInput.value = rating;
             }
         }
         
-        // Review functions
-        let currentEditingReviewId = null;
+        function addSticker(element) {
+            const sticker = element.getAttribute('data-sticker');
+            const commentBox = document.getElementById('reviewComment');
+            
+            // Prepend the sticker, ensuring a space
+            commentBox.value = sticker + ' ' + commentBox.value;
+            
+            // Focus and put cursor at the end
+            commentBox.focus();
+            commentBox.setSelectionRange(commentBox.value.length, commentBox.value.length);
+        }
 
         function submitReview(event) {
             event.preventDefault();
             const rating = parseInt(document.getElementById('reviewRating').value);
             const comment = document.getElementById('reviewComment').value.trim();
-            const feedback = 'review-feedback';
 
             if (rating === 0) {
-                showFeedback(feedback, 'Please select a star rating.', true);
+                showFeedback('review-feedback', 'Please select a star rating.', true);
+                return;
+            }
+            if (comment.length < 5) {
+                showFeedback('review-feedback', 'Please enter a comment of at least 5 characters.', true);
                 return;
             }
 
-            if (currentEditingReviewId !== null) {
-                // Editing existing review
-                const reviewIndex = allReviews.findIndex(r => r.id === currentEditingReviewId);
-                if (reviewIndex !== -1) {
-                    allReviews[reviewIndex].rating = rating;
-                    allReviews[reviewIndex].comment = comment;
-                    allReviews[reviewIndex].date = new Date().toLocaleDateString('en-US');
-                    allReviews[reviewIndex].isDummy = false; // Mark as real user data
-                    localStorage.setItem('allReviews', JSON.stringify(allReviews));
-                    showSection('review-thank-you-page');
-                } else {
-                    showFeedback(feedback, 'Error: Could not find review to edit.', true);
+            if (editingReviewId) {
+                // Edit existing review
+                const index = allReviews.findIndex(r => r.id === editingReviewId && r.userName === user.name);
+                if (index !== -1) {
+                    allReviews[index].rating = rating;
+                    allReviews[index].comment = comment;
+                    allReviews[index].date = new Date().toISOString().split('T')[0];
                 }
             } else {
-                // New review
-                if (allReviews.some(r => r.email === user.email && r.isDummy === false)) {
-                    showFeedback(feedback, 'You have already submitted a review. Please use the View Reviews page to edit it.', true);
-                    return;
-                }
-
+                // Submit new review
                 const newReview = {
                     id: Date.now(),
-                    email: user.email,
-                    name: user.name,
-                    rating: rating,
-                    comment: comment,
-                    date: new Date().toLocaleDateString('en-US'),
-                    isDummy: false
+                    userName: user.name,
+                    userEmail: user.email,
+                    rating,
+                    comment,
+                    date: new Date().toISOString().split('T')[0]
                 };
-
-                // Remove any dummy review by the same user email before adding the real one
-                allReviews = allReviews.filter(r => r.email !== user.email || r.isDummy === false);
-                
-                allReviews.unshift(newReview);
-                localStorage.setItem('allReviews', JSON.stringify(allReviews));
-                
-                showSection('review-thank-you-page');
+                allReviews.push(newReview);
             }
-            
-            // Reset state
-            currentEditingReviewId = null;
+
+            localStorage.setItem('allReviews', JSON.stringify(allReviews));
+            editingReviewId = null;
+            showSection('review-thank-you-page');
         }
         
-        function showReviewForm() {
-            // Reset for a new submission
-            currentEditingReviewId = null;
-            document.getElementById('reviewForm').reset();
-            document.getElementById('reviewRating').value = 0;
-            document.querySelectorAll('#rating-stars .fa-star').forEach(star => {
-                star.classList.remove('checked');
-            });
-
-            // If the user already has a real review, make them edit it
-            const existingReview = allReviews.find(r => r.email === user.email && r.isDummy === false);
-            if (existingReview) {
-                editReview(existingReview.id);
-            } else {
-                showSection('review-form-page');
-            }
-        }
-        
-        function editReview(reviewId) {
-            const reviewToEdit = allReviews.find(r => r.id === reviewId);
-            if (reviewToEdit && reviewToEdit.email === user.email) {
-                currentEditingReviewId = reviewId;
-                
-                // Populate form
-                document.getElementById('reviewComment').value = reviewToEdit.comment;
-                document.getElementById('reviewRating').value = reviewToEdit.rating;
-                
-                // Set star rating visually
-                document.querySelectorAll('#rating-stars .fa-star').forEach(star => {
-                    const ratingValue = parseInt(star.getAttribute('data-rating'));
-                    if (ratingValue <= reviewToEdit.rating) {
-                        star.classList.add('checked');
-                    } else {
-                        star.classList.remove('checked');
-                    }
-                });
-                
-                showSection('review-form-page');
-            }
-        }
-
         function renderReviewsHistory() {
             const listContainer = document.getElementById('reviews-list-container');
-            const reviewsToShow = allReviews.sort((a, b) => b.id - a.id); // Sort by newest first
             listContainer.innerHTML = '';
-            
-            if (reviewsToShow.length === 0) {
-                 document.getElementById('no-reviews-message').style.display = 'block';
-                 return;
-            } else {
-                document.getElementById('no-reviews-message').style.display = 'none';
-            }
+            document.getElementById('no-reviews-message').style.display = 'none';
 
-            reviewsToShow.forEach(review => {
-                const isUserReview = user && review.email === user.email;
+            if (allReviews.length === 0) {
+                document.getElementById('no-reviews-message').style.display = 'block';
+                return;
+            }
+            
+            // Sort reviews by date descending
+            const sortedReviews = [...allReviews].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            sortedReviews.forEach(review => {
+                const isUserReview = review.userEmail === user.email;
+                const card = document.createElement('div');
+                card.className = 'review-card';
                 
-                const reviewCard = document.createElement('div');
-                reviewCard.className = 'review-card';
-                
-                const stars = Array(5).fill().map((_, i) => 
-                    `<i class="fas fa-star ${i < review.rating ? 'checked' : ''}"></i>`
-                ).join('');
-                
-                let editButton = '';
-                if (isUserReview) {
-                    editButton = `<button class="edit-btn" onclick="editReview(${review.id})">Edit</button>`;
+                let starsHtml = '';
+                for (let i = 1; i <= 5; i++) {
+                    starsHtml += `<i class="fas fa-star ${i <= review.rating ? 'checked' : ''}"></i>`;
                 }
 
-                reviewCard.innerHTML = `
-                    <h4 style="margin-top: 0; color: #555;">${review.name} ${isUserReview ? '**(You)**' : ''} ${editButton}</h4>
-                    <p class="card-rating" style="margin-bottom: 5px; font-size: 1.2rem;">${stars}</p>
-                    <p style="font-size: 1.1rem; line-height: 1.4;">${review.comment}</p>
-                    <p style="font-size: 0.85rem; color: #999; text-align: right; margin-top: 10px;">Submitted: ${review.date}</p>
+                const editButton = isUserReview 
+                    ? `<button class="edit-btn" onclick="showReviewForm(${review.id})">Edit</button>` 
+                    : '';
+
+                card.innerHTML = `
+                    <p><strong>Reviewer:</strong> ${review.userName} ${isUserReview ? '**(You)**' : ''} ${editButton}</p>
+                    <p class="card-rating">${starsHtml}</p>
+                    <p style="margin-top: 10px;">${review.comment}</p>
+                    <small style="color: #777;">Date: ${formatDate(review.date)}</small>
                 `;
-                listContainer.appendChild(reviewCard);
+                listContainer.appendChild(card);
             });
         }
         
-        function addSticker(stickerElement) {
-            const sticker = stickerElement.getAttribute('data-sticker');
-            const commentInput = document.getElementById('reviewComment');
-            
-            let currentText = commentInput.value.trim();
-            
-            // Check if the comment already starts with this sticker
-            if (currentText.startsWith(sticker)) {
-                commentInput.value = currentText; // Do nothing
-            } else if (currentText.startsWith("❤️") || currentText.startsWith("👍") || currentText.startsWith("🌟") || currentText.startsWith("😊") || currentText.startsWith("🩸")) {
-                // If a different sticker is already present, replace it
-                const parts = currentText.split(' ');
-                parts[0] = sticker;
-                commentInput.value = parts.join(' ');
-            } else if (currentText === "") {
-                // If empty, just add the sticker
-                 commentInput.value = sticker + " ";
-            } else {
-                // Prepend the sticker
-                commentInput.value = sticker + " " + currentText;
-            }
-            commentInput.focus();
-        }
-
-        // NEW: Function to display the centers as a text list instead of a map
-        function renderDonationCenters() {
-            const listContainer = document.getElementById('centers-list');
-            if (!listContainer) return;
-            listContainer.innerHTML = ''; // Clear previous content
-
-            // Regenerate the list to ensure the current day's data is shown
-            HOSPITAL_LOCATIONS = generateDailyHospitalData();
-
-            HOSPITAL_LOCATIONS.forEach(center => {
-                let color, urgencyText;
-                switch (center.need_level) {
-                    case 'Critical':
-                        color = '#dc3545'; // Red
-                        urgencyText = 'Critical Shortage';
-                        break;
-                    case 'Urgent':
-                        color = '#ffc107'; // Yellow/Orange
-                        urgencyText = 'Urgent Need';
-                        break;
-                    case 'Good Supply':
-                    default:
-                        color = '#28a745'; // Green
-                        urgencyText = 'Good Supply';
-                        break;
-                }
-
-                const centerCard = document.createElement('div');
-                centerCard.className = 'review-card'; // Reusing a similar card style
-                centerCard.innerHTML = `
-                    <h3 style="margin-top:0; color: #007bff;">${center.name}</h3>
-                    <p><strong>City:</strong> ${center.city}</p>
-                    <p><strong>Address:</strong> ${center.address}</p>
-                    <p><strong>Contact:</strong> ${center.contact}</p>
-                    <p><strong>Supply Need:</strong> <span style="color: ${color}; font-weight: 700;">${urgencyText}</span></p>
-                `;
-                listContainer.appendChild(centerCard);
-            });
-
-            // Make sure to show the correct page
-            showSection('donation-centers-page');
-        }
-
-
-        // --- Event Listeners and Initialization ---
+        // Add event listeners for star rating interaction
         document.addEventListener('DOMContentLoaded', () => {
-            // Star rating handler
-            document.querySelectorAll('#rating-stars .fa-star').forEach(star => {
-                star.addEventListener('click', function() {
-                    const rating = parseInt(this.getAttribute('data-rating'));
-                    document.getElementById('reviewRating').value = rating;
-                    document.querySelectorAll('#rating-stars .fa-star').forEach(s => {
-                        const sRating = parseInt(s.getAttribute('data-rating'));
-                        if (sRating <= rating) {
-                            s.classList.add('checked');
-                        } else {
-                            s.classList.remove('checked');
-                        }
-                    });
+            const ratingStars = document.getElementById('rating-stars');
+            if (ratingStars) {
+                ratingStars.addEventListener('mouseover', function(e) {
+                    if (e.target.classList.contains('fa-star')) {
+                        const hoverRating = parseInt(e.target.getAttribute('data-rating'));
+                        setRating(hoverRating, true);
+                    }
                 });
+
+                ratingStars.addEventListener('mouseout', function() {
+                    const currentRating = parseInt(document.getElementById('reviewRating').value);
+                    setRating(currentRating, false);
+                });
+
+                ratingStars.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('fa-star')) {
+                        const newRating = parseInt(e.target.getAttribute('data-rating'));
+                        document.getElementById('reviewRating').value = newRating;
+                        setRating(newRating, false);
+                    }
+                });
+            }
+        });
+
+
+        // --- Reports Logic ---
+        
+        function showReportsPage() {
+            if (!isLoggedIn) return goToHome();
+            pageHistory.length = 0; // *** FIX: Reset history for sidebar jump ***
+            showSection('reports-page');
+        }
+
+        function renderReports() {
+            renderDonationsTable();
+            renderRequestsTable();
+        }
+
+        function renderDonationsTable() {
+            const container = document.getElementById('donations-table-container');
+            const donationsForUser = allDonations.filter(d => d.userEmail === user.email);
+            
+            if (donationsForUser.length === 0) {
+                container.innerHTML = '<p id="no-donations-message" style="text-align: center; color: #777;">No donations have been submitted yet.</p>';
+                return;
+            }
+            
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Hospital</th>
+                        <th>Status</th>
+                        <th>Blood Type</th>
+                        <th>Sicknesses</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${donationsForUser.map(d => `
+                        <tr>
+                            <td>${formatDate(d.date)}</td>
+                            <td>${d.hospital}</td>
+                            <td>${d.status}</td>
+                            <td>${d.bloodType}</td>
+                            <td>${d.sickness}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+            container.innerHTML = '';
+            container.appendChild(table);
+        }
+
+        function renderRequestsTable() {
+            const container = document.getElementById('requests-table-container');
+            const requestsForUser = allRequests.filter(r => r.userEmail === user.email);
+            
+            if (requestsForUser.length === 0) {
+                container.innerHTML = '<p id="no-requests-message" style="text-align: center; color: #777;">No requests have been submitted yet.</p>';
+                return;
+            }
+            
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Date Needed</th>
+                        <th>Blood Type</th>
+                        <th>City</th>
+                        <th>Reason</th>
+                        <th>Submitted On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${requestsForUser.map(r => `
+                        <tr>
+                            <td>${formatDate(r.date)}</td>
+                            <td>${r.bloodType}</td>
+                            <td>${r.city}</td>
+                            <td>${r.reason}</td>
+                            <td>${formatDate(r.submissionDate)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+            container.innerHTML = '';
+            container.appendChild(table);
+        }
+
+        function exportToExcel() {
+            let csv = "Type,Date,Details\n";
+            
+            allDonations.filter(d => d.userEmail === user.email).forEach(d => {
+                csv += `Donation,${formatDate(d.date)},Hospital: ${d.hospital}, Status: ${d.status}, Type: ${d.bloodType}\n`;
+            });
+            
+            allRequests.filter(r => r.userEmail === user.email).forEach(r => {
+                csv += `Request,${formatDate(r.date)},City: ${r.city}, Type: ${r.bloodType}, Reason: ${r.reason}\n`;
             });
 
-            // Dynamic 'Other' input listeners
+            if (csv === "Type,Date,Details\n") {
+                alert("No data to export.");
+                return;
+            }
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) { 
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "BLODO_Report_" + new Date().toISOString().split('T')[0] + ".csv");
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                alert("Data exported successfully!");
+            }
+        }
+
+        function resetData() {
+            if (confirm("Are you sure you want to permanently delete ALL your donation and request data? This cannot be undone.")) {
+                allDonations = [];
+                allRequests = [];
+                user.donationsCount = 0; // Reset user's count
+                unconfirmedDonation = null;
+                localStorage.setItem('allDonations', JSON.stringify(allDonations));
+                localStorage.setItem('allRequests', JSON.stringify(allRequests));
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                localStorage.removeItem('unconfirmedDonation');
+                
+                renderReports();
+                alert("All data cleared successfully.");
+            }
+        }
+
+        // --- Utility and Initialization ---
+        
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const date = dateString instanceof Date ? dateString : new Date(dateString);
+            return date.toLocaleDateString('en-US', options);
+        }
+        
+        function dateDifferenceInDays(date1, date2) {
+            const d1 = date1 instanceof Date ? date1 : new Date(date1);
+            const d2 = date2 instanceof Date ? date2 : new Date(date2);
+            const diffTime = Math.abs(d2.getTime() - d1.getTime());
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function updateWelcomePage() {
+            document.getElementById('welcomeName').textContent = user.name;
+            
+            const reminderBanner = document.getElementById('appointment-reminder');
+            const appointmentCard = document.getElementById('upcoming-appointment-card');
+            
+            if (unconfirmedDonation && unconfirmedDonation.userEmail === user.email) {
+                const appointmentDate = new Date(unconfirmedDonation.date);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (appointmentDate < today) {
+                    // Appointment has passed, show confirmation reminder
+                    document.getElementById('reminder-text').textContent = `Please confirm if you attended your donation on ${formatDate(unconfirmedDonation.date)}.`;
+                    reminderBanner.style.backgroundColor = '#f44336'; // Red for passed date action
+                    reminderBanner.style.color = '#fff';
+                    appointmentCard.style.display = 'none';
+                    showSection('confirm-attendance-page'); // Force confirmation
+                    return;
+
+                } else {
+                    // Appointment is upcoming
+                    document.getElementById('reminder-text').textContent = `You have an appointment on ${formatDate(unconfirmedDonation.date)}.`;
+                    reminderBanner.style.backgroundColor = '#ffc107'; // Yellow for upcoming reminder
+                    reminderBanner.style.color = '#333';
+                    
+                    document.getElementById('upcoming-date').textContent = formatDate(unconfirmedDonation.date);
+                    document.getElementById('upcoming-hospital').textContent = unconfirmedDonation.hospital;
+                    appointmentCard.style.display = 'block';
+                }
+                
+                reminderBanner.style.display = 'flex';
+            } else {
+                // No pending unconfirmed donation
+                reminderBanner.style.display = 'none';
+                appointmentCard.style.display = 'none';
+            }
+        }
+
+        function updateHeaderLinks(loggedIn) {
+            // NOTE: 'centers-sidebar-link' is removed from this list as it is now always visible
+            const loggedInLinks = [
+                'donate-sidebar-link', 'request-sidebar-link', 
+                'reports-sidebar-link', 'awards-sidebar-link', 'account-sidebar-link', 
+                'change-password-sidebar-link', 'review-sidebar-link', 'logout-sidebar-link'
+            ];
+
+            loggedInLinks.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    // Use flex display for the li elements to ensure correct visibility
+                    element.style.display = loggedIn ? 'flex' : 'none'; 
+                }
+            });
+        }
+
+        function startSession() {
+            if (isLoggedIn) {
+                // Ensure correct user data is loaded if only a minimal current user object exists
+                if (!user.donationsCount) {
+                    user = JSON.parse(localStorage.getItem('currentUser'));
+                }
+                updateHeaderLinks(true);
+                goToHome();
+            } else {
+                updateHeaderLinks(false);
+                showSection('main-page');
+            }
+        }
+        
+        // --- NEW: Advanced Chatbot Logic ---
+
+        function getBotResponse(message) {
+            const msg = message.toLowerCase();
+
+            if (msg.includes('stats') || msg.includes('donations count')) {
+                const completedDonations = allDonations.filter(d => d.userEmail === user.email && d.status === 'Completed').length;
+                const totalRequests = allRequests.filter(r => r.userEmail === user.email).length;
+                
+                let response = `Your Donor Statistics:\n- **Completed Donations:** ${completedDonations}\n- **Total Blood Requests:** ${totalRequests}`;
+                
+                if (user.bloodType) {
+                    response += `\n- **Your Blood Type:** ${user.bloodType}`;
+                }
+                return response;
+            }
+
+            if (msg.includes('hospital supply') || msg.includes('needs')) {
+                const criticalHospitals = HOSPITAL_LOCATIONS.filter(h => h.need_level === 'Critical');
+                if (criticalHospitals.length > 0) {
+                    return `⚠️ **Critical Supply Alert:** The following centers urgently need donations: ${criticalHospitals.map(h => h.name).join(', ')}. Please consider donating there!`;
+                } else {
+                    return `Good news! No centers are currently reporting a Critical blood supply need today. However, many still need donations. Check the "Find Donation Centers" page for details.`;
+                }
+            }
+            
+            if (msg.includes('hello') || msg.includes('hi')) {
+                return "Hello! I'm here to help. Try asking about your stats or hospital supply.";
+            }
+            
+            if (msg.includes('help')) {
+                return "I can answer questions about your **stats**, **hospital supply**, and general **donation info**. Try a specific query!";
+            }
+
+            if (msg.includes('donation info') || msg.includes('who can donate')) {
+                return "Most healthy adults aged 18 to 65 can donate blood. You must weigh at least 50 kg (110 lbs) and be in good general health.";
+            }
+
+            return "I'm sorry, I don't have enough information to answer that specific question. Please try asking about your **stats** or **hospital supply**!";
+        }
+
+        function sendMessage() {
+            const chatInput = document.getElementById('chat-input');
+            const chatWindow = document.getElementById('chat-window');
+            const messageText = chatInput.value.trim();
+
+            if (messageText === "") return;
+
+            // 1. Display user message
+            const userMessageDiv = document.createElement('p');
+            userMessageDiv.className = 'user-message';
+            userMessageDiv.textContent = messageText;
+            chatWindow.appendChild(userMessageDiv);
+            chatInput.value = '';
+
+            // 2. Display thinking indicator (optional but good UX)
+            const thinkingDiv = document.createElement('p');
+            thinkingDiv.className = 'bot-message';
+            thinkingDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Thinking...';
+            chatWindow.appendChild(thinkingDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+
+            // 3. Get bot response after a short delay
+            setTimeout(() => {
+                // Remove thinking indicator
+                chatWindow.removeChild(thinkingDiv);
+
+                const botResponseText = getBotResponse(messageText);
+                const botMessageDiv = document.createElement('p');
+                botMessageDiv.className = 'bot-message';
+                // Using innerHTML to support bold markdown in the response
+                botMessageDiv.innerHTML = botResponseText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'); 
+                chatWindow.appendChild(botMessageDiv);
+                
+                // Scroll to the bottom
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }, 750); 
+        }
+        
+        // Add event listener to send message on 'Enter' key press
+        document.addEventListener('keypress', function(e) {
+            const chatInput = document.getElementById('chat-input');
+            const chatbotPage = document.getElementById('chatbot-page');
+            
+            // Send message if Enter is pressed and we are on the chatbot page
+            if (e.key === 'Enter' && chatInput && chatbotPage && chatbotPage.style.display === 'block') {
+                e.preventDefault(); // Prevent default action (like form submission)
+                sendMessage();
+            }
+        });
+
+
+        // --- Event Listeners and Initial Setup ---
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logic to handle show/hide of 'Other' city/hospital inputs
             const citySelect = document.getElementById('city');
             const otherCityInput = document.getElementById('otherCity').parentElement;
             if (citySelect) {
                 citySelect.addEventListener('change', function() {
                     if (this.value === 'Other') {
+                        // Set max height dynamically to trigger the CSS transition
                         otherCityInput.style.maxHeight = otherCityInput.scrollHeight + "px";
                     } else {
                         otherCityInput.style.maxHeight = '0';
